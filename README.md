@@ -1,2 +1,2 @@
 # holiday
-Get maximum cosecutive leaves with atmost k leaves
+Get maximum consecutive leaves with atmost k leaves
