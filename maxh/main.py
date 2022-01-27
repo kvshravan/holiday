@@ -62,6 +62,7 @@ def hello():
             return 0
 
         maxj, maxi = 0, 0
+        #sliding window
         while j < noDays:
             day = date(yy, mm, j)
             if not isholi(day):
