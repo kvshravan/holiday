@@ -11,7 +11,10 @@
         <legend>Get Maximum Consecutive holidays</legend>
         <br>
         <label>Enter year</label><br>
-        <input type="text" name="yy"><br>
+        <input type="text" name="yy" required><br>
+        <br>
+        <label>Maximum affordable leaves:</label><br>
+        <input type="text" name="k" required><br>
         <br>
         <label for="mm">Choose a month:</label>
         <br>
@@ -33,10 +36,14 @@
     </select>
     <br>
     <br>
-    <label>Maximum affordable leaves:</label><br>
-    <input type="text" name="k"><br>
-    <br>
-         <input type="submit" value="Let's go!">
+
+         <input type="submit" name="mmm" value="Let's go!">
+         <br>
+         <br>
+         <hr>
+         (OR)
+         <p> Let us pick the best month for you in the same year <b>^.^</b></p>
+         <input type="submit" name="yyy" value="Pick the best month">
      </fieldset>
   </form>
  </body>
