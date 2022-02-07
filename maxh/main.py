@@ -1,7 +1,8 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, make_response, redirect, url_for
 import calendar
 from datetime import date, timedelta
 import heapq
+import json
 # Create an instance of the Flask class that is the WSGI application.
 # The first argument is the name of the application module or package,
 # typically __name__ when using a single module.
@@ -19,7 +20,14 @@ def add_header(response):
 
 
 def isholi(day):
-    if day.weekday() == 6 or day.weekday() == 5:
+    holidays = request.cookies.get('holidays')
+    if holidays is None:
+        holidays = allHolidays
+    else:
+        holidays = json.loads(holidays)
+    if day.weekday() == 6 and "All-Sundays" in holidays:
+        return 1
+    if day.weekday() == 5 and "All-Saturdays" in holidays:
         return 1
     if str(day) in holidays:
         return 2
@@ -27,61 +35,82 @@ def isholi(day):
 
 
 def bestTimeInAMonth(yy, mm, k, s):
-    s += (calendar.HTMLCalendar().formatmonth(yy, mm))
-    noDays = calendar.monthrange(yy, mm)[1]
-    i = j = 1
+    i = j = date(yy, mm, 1)
     ans = 0
-    storage = [0]*(noDays+1)
-    maxj, maxi = 0, 0
-    while j <= noDays:
-        day = date(yy, mm, j)
-        storage[j] = isholi(day)
-        if not storage[j]:
+    s += "<br> Here is the best pick for you with atmost " + \
+        str(k) + " leaves in the month of " + \
+        calendar.month_name[mm]+":) <br><br>"
+    storage = [[0 for i in range(1, 33)] for j in range(1, 14)]
+    maxj = maxi = date(yy, mm, 1)
+    while i.month <= mm:
+        storage[j.month][j.day] = isholi(j)
+        if not storage[j.month][j.day]:
             k -= 1
         if k < 0:
-            if j-i > maxj-maxi:
-                ans = max(ans, j-i)
+            if (j-i).days > (maxj-maxi).days:
                 maxi = i
                 maxj = j
-            while i <= j and storage[i]:
-                i += 1
+            while i.month <= mm and i <= j and storage[i.month][i.day]:
+                i += timedelta(days=1)
             k += 1
-            i += 1
-        if j-i > maxj-maxi:
-            ans = max(ans, j-i)
+            i += timedelta(days=1)
+        if (j-i).days > (maxj-maxi).days:
             maxi = i
             maxj = j
-        j += 1
-    if j-i > maxj-maxi:
-        ans = max(ans, j-i)
+        j += timedelta(days=1)
+    if (j-i).days > (maxj-maxi).days:
         maxi = i
         maxj = j
-    s += "<br>Maximum holidays - <b>"+str(ans) + "</b> <br>"
-    for i in range(maxi, maxj):
-        day = date(yy, mm, i)
+    ans = (maxj-maxi).days
+    maxmonth = maxj.month+1
+    holidays = request.cookies.get('holidays')
+    if holidays is None:
+        holidays = allHolidays
+    else:
+        holidays = json.loads(holidays)
+    if maxj.year > maxi.year:
+        maxmonth = 12
+    for i in range(maxi.month, maxmonth):
+        s += (calendar.HTMLCalendar().formatmonth(maxi.year, i))
         s += "<br>"
-        var = storage[i]
+    s += "<br>Maximum holidays - <b>"+str(ans) + "</b> <br>"
+    while maxi < maxj:
+        day = maxi
+        d = day.strftime("%d %B, %Y")
+        s += "<br>"
+        var = storage[maxi.month][maxi.day]
         if not var:
-            s = s + "<b>" + str(day) + " - Leave</b>"
+            s = s + "<b>" + d + " - Leave</b>"
         else:
             if var == 1:
-                s = s + str(day) + " - Holiday (Weekend)"
+                s = s + d + " - Holiday (Weekend)"
             else:
-                s = s + str(day) + " - Holiday" + \
+                s = s + d + " - Holiday" + \
                             "(" + holidays[str(day)] + ")"
+        maxi += timedelta(days=1)
+    s += "<br>-----------------------------------------------------------------------------<br>"
     return s
 
 
-def topChoices(stack, storage, s):
-    while stack:
-        h, maxi, maxj = heapq.heappop(stack)
+def topChoices(heap, storage, s):
+    m = 20  # top m choices
+    holidays = request.cookies.get('holidays')
+    if holidays is None:
+        holidays = allHolidays
+    else:
+        holidays = json.loads(holidays)
+    while m:
+        h, maxi, maxj = heapq.heappop(heap)
+        h *= -1
         s += "<br>Maximum holidays - <b>" + str(h) + "</b> <br>"
-        s += "<h4>from " + str(maxi)
-        s += " to " + str(maxj)+"<br></h4>"
-        for i in range(maxi.month, maxj.month+1):
+        s += "<h4>from " + maxi.strftime("%d %B, %Y")
+        s += " to " + maxj.strftime("%d %B, %Y")+"<br></h4>"
+        maxmonth = maxj.month+1
+        if maxj.year > maxi.year:
+            maxmonth = 12
+        for i in range(maxi.month, maxmonth):
             s += (calendar.HTMLCalendar().formatmonth(maxi.year, i))
             s += "<br>"
-        print(maxi, maxj)
         while maxi < maxj:
             day = maxi
             s += "<br>"
@@ -96,65 +125,96 @@ def topChoices(stack, storage, s):
                                 "(" + holidays[str(day)] + ")"
             maxi += timedelta(days=1)
         s += "<br>-----------------------------------------------------------------------------<br>"
-        return s
+        m -= 1
+    return s
 
 
 def bestTimeInYear(yy, k, s):
     stack = []
-    m = 20  # top m choices
+    s += "<br> Here are the best 20 choices picked for you with atmost " + \
+        str(k) + " leaves starting from tomorrow :) <br>"
     storage = [[0 for i in range(1, 33)] for j in range(1, 14)]
     heapq.heapify(stack)
     today = date.today()
+    today += timedelta(days=1)
+    print(today.day)
     mm, dd = today.month, today.day
     i = date(yy, mm, dd)
     j = date(yy, mm, dd)
+    print(i)
     while j.year <= yy:
         storage[j.month][j.day] = isholi(j)
         if not storage[j.month][j.day]:
             k -= 1
         if k < 0:
-            if len(stack) < m:
-                heapq.heappush(stack, ((j-i).days, i, j))
-            elif (j-i).days > stack[0][0]:
-                heapq.heappop(stack)
-                heapq.heappush(stack, ((j-i).days, i, j))
+            heapq.heappush(stack, (-(j-i).days, i, j))
             while i <= j and storage[i.month][i.day]:
                 i += timedelta(days=1)
             k += 1
             i += timedelta(days=1)
-        if len(stack) < m:
-            heapq.heappush(stack, ((j-i).days, i, j))
-        elif (j-i).days > stack[0][0]:
-            heapq.heappop(stack)
-            heapq.heappush(stack, ((j-i).days, i, j))
+        heapq.heappush(stack, (-(j-i).days, i, j))
         j += timedelta(days=1)
-    if len(stack) < m:
-        heapq.heappush(stack, ((j-i).days, i, j))
-    elif (j-i).days > stack[0][0]:
-        heapq.heappop(stack)
-        heapq.heappush(stack, ((j-i).days, i, j))
+    heapq.heappush(stack, (-(j-i).days, i, j))
     return topChoices(stack, storage, s)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def hello():
     # Render the page
+    print('Home')
     if request.method == "POST":
-        print(request.form)
         yy = int(request.form.get('yy'))
         mm = int(request.form.get('mm'))
         k = int(request.form.get('k'))
-        print(calendar.month(yy, mm))
         s = '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
         if 'mmm' in request.form:
             s = bestTimeInAMonth(yy, mm, k, s)
         else:
             s = bestTimeInYear(yy, k, s)
         return s
-    return render_template("form.html")
+    resp = make_response(render_template('form.html'))
+    if 'holidays' not in request.cookies:
+        resp.set_cookie('holidays', json.dumps(allHolidays))
+    return resp
 
 
-holidays = {
+@app.route('/holiday', methods=['GET', 'POST'])
+def holiday():
+    holidays = request.cookies.get('holidays')
+    print(holidays)
+    if request.method == "POST":
+        holidays = request.cookies.get('holidays')
+        dictHoliday = json.loads(holidays)
+        print(request.form)
+        try:
+            key, val = request.form.get('pick'), request.form.get('val')
+            key, val = key.strip(), val.strip()
+            dictHoliday[key] = val
+            resp = make_response(
+                redirect(url_for('.holiday', _external=True, _scheme="https")))
+            resp.set_cookie('holidays', json.dumps(dictHoliday))
+            return resp
+        except Exception as e:
+            print(e)
+    return render_template('holiday.html', days=json.loads(holidays))
+
+
+@app.route('/remove/<key>', methods=['GET', 'POST'])
+def removeHoliday(key):
+    holidays = request.cookies.get('holidays')
+    dictHoliday = json.loads(holidays)
+    try:
+        del dictHoliday[key]
+        resp = make_response(
+            redirect(url_for('holiday', _external=True, _scheme="https")))
+        resp.set_cookie('holidays', json.dumps(dictHoliday))
+        return resp
+    except Exception as e:
+        print(e)
+    return redirect(url_for('holiday'))
+
+
+allHolidays = {
     "2022-01-13": "Uruka /Lohri",
     "2022-01-14": "Shankranti",
     "2022-01-26": "Republic Day",
@@ -174,6 +234,8 @@ holidays = {
     "2022-10-24": "Deepavali",
     "2022-11-08": "Guru Nanak’s Birthday",
     "2022-12-25": "Christmas",
+    "All-Saturdays": " ",
+    "All-Sundays": " "
 }
 
 if __name__ == '__main__':
