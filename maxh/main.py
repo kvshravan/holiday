@@ -240,4 +240,4 @@ allHolidays = {
 
 if __name__ == '__main__':
     # Run the app server on localhost:5000
-    app.run('localhost', 5000, debug=True)
+    app.run()
