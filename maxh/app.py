@@ -137,11 +137,9 @@ def bestTimeInYear(yy, k, s):
     heapq.heapify(stack)
     today = date.today()
     today += timedelta(days=1)
-    print(today.day)
     mm, dd = today.month, today.day
     i = date(yy, mm, dd)
     j = date(yy, mm, dd)
-    print(i)
     while j.year <= yy:
         storage[j.month][j.day] = isholi(j)
         if not storage[j.month][j.day]:
@@ -159,9 +157,8 @@ def bestTimeInYear(yy, k, s):
 
 
 @app.route('/', methods=['GET', 'POST'])
-def hello():
+def home():
     # Render the page
-    print('Home')
     if request.method == "POST":
         yy = int(request.form.get('yy'))
         mm = int(request.form.get('mm'))
@@ -181,11 +178,9 @@ def hello():
 @app.route('/holiday', methods=['GET', 'POST'])
 def holiday():
     holidays = request.cookies.get('holidays')
-    print(holidays)
     if request.method == "POST":
         holidays = request.cookies.get('holidays')
         dictHoliday = json.loads(holidays)
-        print(request.form)
         try:
             key, val = request.form.get('pick'), request.form.get('val')
             key, val = key.strip(), val.strip()
@@ -202,7 +197,8 @@ def holiday():
 @app.route('/remove/<key>', methods=['GET', 'POST'])
 def removeHoliday(key):
     holidays = request.cookies.get('holidays')
-    dictHoliday = json.loads(holidays)
+    if holidays is not None:
+        dictHoliday = json.loads(holidays)
     try:
         del dictHoliday[key]
         resp = make_response(
@@ -213,6 +209,9 @@ def removeHoliday(key):
         print(e)
     return redirect(url_for('holiday'))
 
+@app.route('/about', methods=['GET'])
+def about():
+    return render_template('about.html')
 
 allHolidays = {
     "2022-01-13": "Uruka /Lohri",
