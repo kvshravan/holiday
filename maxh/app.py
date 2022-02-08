@@ -37,6 +37,7 @@ def isholi(day):
 def bestTimeInAMonth(yy, mm, k, s):
     i = j = date(yy, mm, 1)
     ans = 0
+    k = min(k,366)
     s += "<br> Here is the best pick for you with atmost " + \
         str(k) + " leaves in the month of " + \
         calendar.month_name[mm]+":) <br><br>"
@@ -131,6 +132,7 @@ def topChoices(heap, storage, s):
 
 def bestTimeInYear(yy, k, s):
     stack = []
+    k = min(k,366)
     s += "<br> Here are the best 20 choices picked for you with atmost " + \
         str(k) + " leaves starting from tomorrow :) <br>"
     storage = [[0 for i in range(1, 33)] for j in range(1, 14)]
