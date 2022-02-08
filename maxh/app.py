@@ -197,7 +197,8 @@ def holiday():
 @app.route('/remove/<key>', methods=['GET', 'POST'])
 def removeHoliday(key):
     holidays = request.cookies.get('holidays')
-    dictHoliday = json.loads(holidays)
+    if holidays is not None:
+        dictHoliday = json.loads(holidays)
     try:
         del dictHoliday[key]
         resp = make_response(
