@@ -7,19 +7,23 @@
 .container{
   padding: 10px;
 }
+#show-message{
+      display: none;
+    }
 </style>
  <body>
    <h2 class="container"><a href="{{ url_for('.hello') }}" >Back</a></h2>
+	<center id="show-message"><b><p style="color:green;">Loading... do not refresh the page</p></b></center>
    <div class="container">
      <fieldset>
         <legend>Holidays list</legend>
         {% for dkey,val in days.items() %}
-        <h4>{{dkey}} {{val}}<a href="{{ url_for('.removeHoliday',key=dkey) }}"> Remove </a></h4>
+        <h4>{{dkey}} {{val}}<a href="{{ url_for('.removeHoliday',key=dkey) }}" onclick="loading()"> Remove </a></h4>
         {% endfor %}
      </fieldset>
      <br>
      <fieldset>
-       <form method="post">
+       <form method="post" onsubmit="loading()">
        <legend> Add a holiday</legend>
        <br>
        <input type="date" placeholder="Pick a date" name="pick" id="pick">
@@ -32,5 +36,11 @@
        </form>
      </fieldset>
 </div>
+  <script type="text/javascript">// <![CDATA[
+        function loading(){
+          window.scrollTo(0, 0);
+            $("#show-message").show();
+        }
+// ]]></script>
  </body>
 </html>
