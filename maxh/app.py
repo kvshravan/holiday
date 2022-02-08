@@ -69,7 +69,7 @@ def bestTimeInAMonth(yy, mm, k, s):
     else:
         holidays = json.loads(holidays)
     if maxj.year > maxi.year:
-        maxmonth = 12
+        maxmonth = 13
     for i in range(maxi.month, maxmonth):
         s += (calendar.HTMLCalendar().formatmonth(maxi.year, i))
         s += "<br>"
@@ -107,7 +107,7 @@ def topChoices(heap, storage, s):
         s += " to " + maxj.strftime("%d %B, %Y")+"<br></h4>"
         maxmonth = maxj.month+1
         if maxj.year > maxi.year:
-            maxmonth = 12
+            maxmonth = 13
         for i in range(maxi.month, maxmonth):
             s += (calendar.HTMLCalendar().formatmonth(maxi.year, i))
             s += "<br>"
