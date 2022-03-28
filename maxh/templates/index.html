@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='fonts/icomoon/style.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/owl.carousel.min.css') }}">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+    
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <title>Garuda - Home</title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+  </style>  
+  </head>
+  <body>
+  
+
+  <div class="content">
+    
+    <div class="container">
+
+      
+      <div class="row justify-content-center">
+        <div class="col-md-10">
+          
+          <div class="row align-items-center">
+            <div class="col-lg-7 mb-5 mb-lg-0">
+
+              <h2 class="mb-5">Relax, <br>Take a break.</h2>
+
+              <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm" name="contactForm" onsubmit="loading()">                 
+                <div class="row">
+                  <div class="col-md-12 form-group">
+                    <label for="yy"><b>Year :</b></label> 
+                    <input type="number" inputmode="numeric" class="form-control" name="yy" id="yy" placeholder="Enter Year" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 form-group">
+                    <label for="k"><b>Maximum Affordable Leaves :</b></label> 
+                    <input type="number" inputmode="numeric" class="form-control" name="k" id="k" placeholder="Enter Leaves" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12 form-group">
+                    <label for="mm"><b>Choose a month :</b></label> 
+                    <select name="mm" id="mm" class="browser-default custom-select custom-select-lg mb-3 rounded">
+                      <option value="1">January</option>
+                      <option value="2">Febuary</option>
+                      <option value="3">March</option>
+                      <option value="4">April</option>
+                      <option value="5">May</option>
+                      <option value="6">June</option>
+                      <option value="7">July</option>
+                      <option value="8">August</option>
+                      <option value="9">September</option>
+                      <option value="10">October</option>
+                      <option value="11">November</option>
+                      <option value="12">December</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <input type="submit" name="mmm" value="Find holidays" class="btn btn-primary rounded-pill py-2 px-4">
+                    <span class="submitting"></span>
+                  </div>
+                </div>
+              </form>
+
+              <div id="form-message-warning mt-4"></div> 
+              <div id="form-message-success">
+                Your message was sent, thank you!
+              </div>
+
+            </div>
+            <div class="col-lg-4 ml-auto">
+              <h3 class="mb-4">Garuda.</h3>
+              <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays :)</p>
+              <p><a href="#">Read more</a></p>
+            </div>
+          </div>
+        </div>  
+        </div>
+      </div>
+  </div>
+    
+    
+
+    <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/popper.min.js')}}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+    
+  </body>
+</html>

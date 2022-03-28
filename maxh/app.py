@@ -171,7 +171,7 @@ def home():
         else:
             s = bestTimeInYear(yy, k, s)
         return s
-    resp = make_response(render_template('form.html'))
+    resp = make_response(render_template('index.html'))
     if 'holidays' not in request.cookies:
         resp.set_cookie('holidays', json.dumps(allHolidays))
     return resp
