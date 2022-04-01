@@ -1,90 +1,65 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
-<head>
-    <title>Table V02</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--===============================================================================================-->
-    <link rel="icon" type="image/png" href="{{ url_for('static',filename='images/icons/favicon.ico') }}" />
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static',filename='vendor/bootstrap/css/bootstrap.min.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/animate/animate.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='vendor/select2/select2.min.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css"
-        href="{{ url_for('static',filename='vendor/perfect-scrollbar/perfect-scrollbar.css') }}">
-    <!--===============================================================================================-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/util.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/main.css') }}">
-    <!--===============================================================================================-->
-</head>
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 
-<body>
-    <div class="limiter">
-        {% for month in months %}
-            {{month|safe}}
+    <title>Samay </title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+      .container{
+          padding-left: 1%;
+      }
+      table{
+          display: inline-table;
+          background-color: whitesmoke;
+          border: 1px;
+          border-radius: 20px;
+          font-size: large;
+          padding: 5px;
+      }
+      tr:first-child{
+          background-color: white;
+      }
+      tr:nth-child(2){
+          background-color: white;
+      }
+  </style>  
+  </head>
+  <body>
+  
+    
+    <div class="container"> 
+            <h4> Here is the best pick for you with atmost <span style='color: #eb4d55;'>{{k}} </span> leaves in the month of {{month}} :)</h4>
+            {% for calendar in calendars%}
+            {{calendar | safe}}
             {% endfor %}
-        <div class="container-table100">
-            <div class="wrap-table100">
-                <div class="table">
-
-                    <div class="row header">
-                        <div class="cell">
-                            Date
-                        </div>
-                        <div class="cell">
-                            Holiday
-                        </div>
-                        <div class="cell" style="text-align: center;">
-                            Holiday Name
-                        </div>
-
-                    </div>
-                    {% for holiday in holidays %}
-                    <div class="row">
-                        <div class="cell" data-title="Date">
-                            {{ holiday[0] }}
-                        </div>
-
-                        <div class="cell" data-title="holiday">
-                            {% if holiday[1] %}
-                            Holiday
-                            {% else %}
-                            <span style="color: #eb4d55;">Leave</span>
-                            {% endif %}
-                        </div>
-
-                        <div class="cell" style="text-align: center;" data-title="name">
-                            {{ holiday[2] }}
-                        </div>
-                    </div>
-                    {% endfor %}
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-    <!--===============================================================================================-->
-    <script src="{{ url_for('static',filename='vendor/jquery/jquery-3.2.1.min.js') }}"></script>
-    <!--===============================================================================================-->
-    <script src="{{ url_for('static',filename='vendor/bootstrap/js/popper.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='vendor/bootstrap/js/bootstrap.min.js') }}"></script>
-    <!--===============================================================================================-->
-    <script src="{{ url_for('static',filename='vendor/select2/select2.min.js') }}"></script>
-    <!--===============================================================================================-->
-    <script src="{{ url_for('static',filename='js/viewmain.js') }}"></script>
-
-</body>
-
+                <b><p>Maximum consecutive holidays - {{noHolidays}}</p></b>
+            {% for holiday in holidays %}
+                {% if holiday[1] == 0 %}
+                <span style='color: red;'><p style="font-weight: 750;">{{holiday[0]}} - Leave</p></span>
+                {% elif holiday[1] == 1 %}
+                <p style="font-weight: 750;">{{holiday[0]}} - Holiday (Weekend)</p>
+                {% else %}
+                <p style="font-weight: 750;">{{holiday[0]}} - Holiday ({{holiday[1]}})</p>
+                {% endif %}
+            {% endfor %}
+            <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
+            
+      </div>    
+    
+  </body>
 </html>
