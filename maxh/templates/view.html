@@ -3,7 +3,7 @@
   <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
     <!-- Style -->
@@ -47,6 +47,7 @@
             {% for calendar in calendars%}
             {{calendar | safe}}
             {% endfor %}
+            <span style='color: green;'> <p style="font-weight: 750;">From {{holidays[0][0]}} - {{last}}</p></span>
                 <b><p>Maximum consecutive holidays - {{noHolidays}}</p></b>
             {% for holiday in holidays %}
                 {% if holiday[1] == 0 %}

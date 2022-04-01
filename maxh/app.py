@@ -140,7 +140,6 @@ def bestTimeInAMonth(yy, mm, k, s):
         c = HighlightedCalendar(highlight=highlights_list[i]).formatmonth(maxi.year, i)
         calendars.append(c)
     
-    print(calendars)
 
     return maxholidays,calendars
 
@@ -230,6 +229,7 @@ def home():
             month=calendar.month_name[mm],
             holidays=maxholidays,
             calendars=calendars,
+            last = maxholidays[len(maxholidays)-1][0],
         )
     resp = make_response(render_template('index.html'))
     if 'holidays' not in request.cookies:
