@@ -16,10 +16,10 @@ div{
         <legend>Get Maximum Consecutive holidays</legend>
         <br>
         <label>Enter year</label><br>
-        <input type="number" name="yy" placeholder="2022" required><br>
+        <input type="number" name="yy" min="1" max="9999" placeholder="2022" required><br>
         <br>
         <label>Maximum affordable leaves (366 leaves at-max) :</label><br>
-        <input type="number" name="k" required><br>
+        <input type="number" name="k" min="0" max="366" required><br>
         <br>
         <label for="mm">Choose a month:</label>
         <br>
