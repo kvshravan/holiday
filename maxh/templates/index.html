@@ -1,66 +1,73 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='fonts/icomoon/style.css') }}">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/owl.carousel.min.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='fonts/icomoon/style.css') }}">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
-    
-    <!-- Style -->
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/owl.carousel.min.css') }}">
 
-    <title>Samay - Home</title>
-    <style>
-      input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-      }
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
 
-      input[type=number] {
-          -moz-appearance: textfield;
-      }
-  </style>  
-  </head>
-  <body>
-  
+  <!-- Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+  <title>Samay - Home</title>
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader-wrapper">
+    <span class="loader"></span>
+  </div>
 
   <div class="content">
-    
+
     <div class="container">
 
-      
+
       <div class="row justify-content-center">
         <div class="col-md-10">
-          
+
           <div class="row align-items-center">
             <div class="col-lg-7 mb-5 mb-lg-0">
 
               <h2 class="mb-5">Relax, <br>Take a break.</h2>
 
-              <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm" name="contactForm" onsubmit="loading()">                 
+              <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm"
+                name="contactForm" onsubmit="loading()">
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <label for="yy"><b>Year :</b></label> 
-                    <input type="number" inputmode="numeric" class="form-control" name="yy" id="yy" placeholder="Enter Year" required>
+                    <label for="yy"><b>Year :</b></label>
+                    <input type="number" inputmode="numeric" class="form-control" name="yy" id="yy"
+                      placeholder="Enter Year" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <label for="k"><b>Maximum Affordable Leaves :</b></label> 
-                    <input type="number" inputmode="numeric" class="form-control" name="k" id="k" placeholder="Enter Leaves" required>
+                    <label for="k"><b>Maximum Affordable Leaves :</b></label>
+                    <input type="number" inputmode="numeric" class="form-control" name="k" id="k"
+                      placeholder="Enter Leaves" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <label for="mm"><b>Choose a month :</b></label> 
+                    <label for="mm"><b>Choose a month :</b></label>
                     <select name="mm" id="mm" class="browser-default custom-select custom-select-lg mb-3 rounded">
                       <option value="1">January</option>
                       <option value="2">Febuary</option>
@@ -79,13 +86,14 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <input type="submit" name="mmm" value="Find holidays" class="btn btn-primary rounded-pill py-2 px-4">
+                    <input type="submit" name="mmm" value="Find holidays"
+                      class="btn btn-primary rounded-pill py-2 px-4">
                     <span class="submitting"></span>
                   </div>
                 </div>
               </form>
 
-              <div id="form-message-warning mt-4"></div> 
+              <div id="form-message-warning mt-4"></div>
               <div id="form-message-success">
                 Your message was sent, thank you!
               </div>
@@ -93,21 +101,28 @@
             </div>
             <div class="col-lg-4 ml-auto">
               <h3 class="mb-4">Samay.</h3>
-              <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays :)</p>
+              <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays
+                :)</p>
               <p><a href="#">Read more</a></p>
             </div>
           </div>
-        </div>  
         </div>
       </div>
+    </div>
   </div>
-    
-    
 
-    <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
-    <script src="{{ url_for('static',filename='js/popper.min.js')}}"></script>
-    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='js/main.js') }}"></script>
-    
-  </body>
+
+
+  <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='js/popper.min.js')}}"></script>
+  <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+  <script src="{{ url_for('static',filename='js/main.js') }}"></script>
+  <script>
+    $(window).on("load",function(){
+      $(".loader-wrapper").fadeOut("slow");
+    });
+  </script> 
+
+</body>
+
 </html>
