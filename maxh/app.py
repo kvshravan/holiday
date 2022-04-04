@@ -221,6 +221,10 @@ def bestTimeInYear(yy, k, s):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Render the page
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+        print('IP',request.environ['REMOTE_ADDR'])
+    else:
+        print('IP',request.environ['HTTP_X_FORWARDED_FOR'])
     highlight = range(1, 7)
     if request.method == "POST":
         yy = int(request.form.get('yy'))
