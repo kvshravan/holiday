@@ -80,7 +80,7 @@ label.error {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: rgb(185, 183, 183);
+    background-color: rgb(197, 195, 195);
     display: flex;
     justify-content: center;
     align-items: center;
