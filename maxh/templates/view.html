@@ -40,7 +40,9 @@
   </style>  
   </head>
   <body>
-  
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
     
     <div class="container"> 
             <h4> Here is the best pick for you with atmost <span style='color: #eb4d55;'>{{k}} </span> leaves in the month of {{month}} :)</h4>
@@ -60,7 +62,12 @@
             {% endfor %}
             <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
             
-      </div>    
-    
+      </div>
+      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+      <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+      </script> 
   </body>
 </html>
