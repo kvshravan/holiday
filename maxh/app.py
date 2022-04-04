@@ -13,16 +13,19 @@ app = Flask(__name__)
 # and add decorators to define the appropriate resource locators for them.
 
 class HighlightedCalendar(calendar.HTMLCalendar):
-    def __init__(self, highlight=[], *args, **kwargs):
+    def __init__(self, highlight=[], leaves=[], *args, **kwargs):
         super().__init__(*args, **kwargs)
         self._highlight = highlight
+        self._leaves = leaves
     
     def formatday(self, day, weekday):
         """
         Return a day as a table cell.
         """
-        if day in self._highlight:
+        if day in self._leaves:
             return '<td class="%s" style="font-weight: 750;color:red;" bgcolor="pink">%d</td>' % (self.cssclasses[weekday], day)
+        elif self._highlight[0] <= day <= self._highlight[1]:
+            return '<td class="%s" style="font-weight: 750;" bgcolor="pink">%d</td>' % (self.cssclasses[weekday], day)
         else:
             if day == 0:
             # day outside month
@@ -116,15 +119,21 @@ def bestTimeInAMonth(yy, mm, k, s):
 
     maxholidays = []
     highlights_list = [[] for i in range(13)]
+    leaves_list = [[] for i in range(13)]
 
     save_maxi_month = maxi.month
     while maxi < maxj:
         day = maxi
         d = day.strftime("%d %B, %Y")
-        highlights_list[maxi.month].append(maxi.day)
+        if len(highlights_list[maxi.month]):
+            highlights_list[maxi.month][1] = maxi.day
+        else:
+            highlights_list[maxi.month].append(maxi.day)
+            highlights_list[maxi.month].append(maxi.day)
         var = storage[maxi.month][maxi.day]
         if not var:
             maxholidays.append((d, 0))
+            leaves_list[maxi.month].append(maxi.day)
         elif var == 1:
             maxholidays.append((d, 1))
         else:
@@ -137,7 +146,7 @@ def bestTimeInAMonth(yy, mm, k, s):
     calendars = []
 
     for i in range(save_maxi_month, maxmonth):
-        c = HighlightedCalendar(highlight=highlights_list[i]).formatmonth(maxi.year, i)
+        c = HighlightedCalendar(highlight=highlights_list[i],leaves=leaves_list[i]).formatmonth(maxi.year, i)
         calendars.append(c)
     
 
