@@ -1,3 +1,5 @@
+from ipaddress import ip_address
+from urllib import response
 from flask import Flask, request, render_template, make_response, redirect, url_for
 import calendar
 from datetime import date, timedelta
@@ -221,10 +223,8 @@ def bestTimeInYear(yy, k, s):
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Render the page
-    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        print('IP',request.environ['REMOTE_ADDR'])
-    else:
-        print('IP',request.environ['HTTP_X_FORWARDED_FOR'])
+    c = get_country(get_ip())
+    print(c)
     highlight = range(1, 7)
     if request.method == "POST":
         yy = int(request.form.get('yy'))
@@ -249,6 +249,21 @@ def home():
         resp.set_cookie('holidays', json.dumps(allHolidays))
     return resp
 
+def get_ip():
+    if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
+       return request.environ['REMOTE_ADDR']
+    else:
+        return request.environ['HTTP_X_FORWARDED_FOR']
+
+def get_country(ip):
+    try:
+        response = request.get("http://ip-api.com/json/{}".format(ip))
+        js = response.json()
+        country = js['countryCode']
+        return country
+    except Exception as e:
+        print(e)
+        print('failed to get country name')
 
 @app.route('/holiday', methods=['GET', 'POST'])
 def holiday():
