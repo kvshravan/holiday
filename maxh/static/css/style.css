@@ -80,10 +80,11 @@ label.error {
     position: absolute;
     top: 0;
     left: 0;
-    background-color: whitesmoke;
+    background-color: grey;
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100;
   
   }
   .loader {

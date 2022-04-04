@@ -110,7 +110,8 @@ def bestTimeInAMonth(yy, mm, k, s):
     if (j - i).days > (maxj - maxi).days:
         maxi = i
         maxj = j
-
+    
+    maxj -= timedelta(days=1)
     maxmonth = maxj.month + 1
 
     holidays = request.cookies.get('holidays')
@@ -124,7 +125,7 @@ def bestTimeInAMonth(yy, mm, k, s):
     leaves_list = [[] for i in range(13)]
 
     save_maxi_month = maxi.month
-    while maxi < maxj:
+    while maxi <= maxj:
         day = maxi
         d = day.strftime("%d %B, %Y")
         if len(highlights_list[maxi.month]):
@@ -146,8 +147,9 @@ def bestTimeInAMonth(yy, mm, k, s):
         maxmonth = 13
 
     calendars = []
-
+    print(maxmonth)
     for i in range(save_maxi_month, maxmonth):
+        print(highlights_list[i])
         c = HighlightedCalendar(highlight=highlights_list[i],leaves=leaves_list[i]).formatmonth(maxi.year, i)
         calendars.append(c)
     
