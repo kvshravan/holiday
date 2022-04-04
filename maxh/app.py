@@ -1,5 +1,5 @@
 from ipaddress import ip_address
-from urllib import response
+import requests
 from flask import Flask, request, render_template, make_response, redirect, url_for
 import calendar
 from datetime import date, timedelta
@@ -257,7 +257,7 @@ def get_ip():
 
 def get_country(ip):
     try:
-        response = request.get("http://ip-api.com/json/{}".format(ip))
+        response = requests.get("http://ip-api.com/json/{}".format(ip))
         js = response.json()
         country = js['countryCode']
         return country
