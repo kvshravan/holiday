@@ -308,7 +308,7 @@ def holiday():
             key, val = key.strip(), val.strip()
             dictHoliday[key] = val
             resp = make_response(
-                redirect(url_for('.holiday', _external=True, _scheme="http")))
+                redirect(url_for('.holiday', _external=True, _scheme="https")))
             resp.set_cookie('holidays', json.dumps(dictHoliday))
             return resp
         except Exception as e:
@@ -324,7 +324,7 @@ def removeHoliday(key):
     try:
         del dictHoliday[key]
         resp = make_response(
-            redirect(url_for('holiday', _external=True, _scheme="http")))
+            redirect(url_for('holiday', _external=True, _scheme="https")))
         resp.set_cookie('holidays', json.dumps(dictHoliday))
         return resp
     except Exception as e:
