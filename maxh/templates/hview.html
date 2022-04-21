@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <title>Samay </title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+      .container{
+          padding-left: 1%;
+      }
+      a:link {
+  color: red;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: hotpink;
+}
+
+/* selected link */
+a:active {
+  color: blue;
+}
+  </style>  
+  </head>
+  <body>
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
+    
+    <div class="container"> 
+            <h3><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Back</a></h3>
+                <fieldset>
+                   <legend><p style="font-weight: 750;font-size: larger;">Holidays list</p></legend>
+                   {% for dkey,val in days.items() %}
+                   <h4>{{dkey}} &emsp; {{val}}&ensp;<a style='color: red;text-decoration: underline;' href="{{ url_for('.removeHoliday',key=dkey) }}"> Remove </a></h4>
+                   {% endfor %}
+                </fieldset>
+                <br>
+                <fieldset>
+                  <form method="post" action="">
+                    <legend><p style="font-weight: 750;font-size: larger;">Add a holiday</p></legend>
+                  <br>
+                  <input type="date" placeholder="Pick a date" name="pick" id="pick" required>
+                  <br>
+                  <br>
+                  <input type="text" placeholder="Holi" name="val" id="val" required>
+                  <br>
+                  <br>
+                  <input type="submit" name="add" value="Add">
+                  </form>
+                </fieldset>
+                <br>
+                <fieldset>
+                  <form method="post" action="">
+                    <legend><p style="font-weight: 750;font-size: larger;">Add Multiple Weekdays</p></legend>
+                  <br>
+                  <select name="week" id="week">
+                    <option value="All-Mondays">All-Mondays</option>
+                    <option value="All-Tuesdays">All-Tuesdays</option>
+                    <option value="All-Wednesdays">All-Wednesdays</option>
+                    <option value="All-Thursdays">All-Thursdays</option>
+                    <option value="All-Fridays">All-Fridays</option>
+                    <option value="All-Saturdays">All-Saturdays</option>
+                    <option value="All-Sundays">All-Sundays</option>
+                  </select>
+                  <br>
+                  <br>
+                  <input type="submit" name="mul" value="Add">
+                  </form>
+                </fieldset>
+            <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
+            
+      </div>
+      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+      <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+      </script> 
+  </body>
+</html>

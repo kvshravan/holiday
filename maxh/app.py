@@ -71,10 +71,11 @@ def add_header(response):
 
 
 def isholi(day, holidays):
-    if day.weekday() == 6 and "All-Sundays" in holidays:
-        return 1
-    if day.weekday() == 5 and "All-Saturdays" in holidays:
-        return 1
+    days = (0,1,2,3,4,5,6)
+    dictKeys = ("All-Mondays","All-Tuesdays","All-Wednesdays","All-Thursdays","All-Fridays","All-Saturdays","All-Sundays")
+    for i in days:
+        if day.weekday() == i and dictKeys[i] in holidays:
+            return 1
     if str(day) in holidays:
         return 2
     return 0
@@ -304,8 +305,13 @@ def holiday():
         holidays = request.cookies.get('holidays')
         dictHoliday = json.loads(holidays)
         try:
-            key, val = request.form.get('pick'), request.form.get('val')
-            key, val = key.strip(), val.strip()
+            if 'mul' in request.form:
+                key, val = request.form.get('week'), ' '
+                print(request.form)
+                key = key.strip()
+            else:
+                key, val = request.form.get('pick'), request.form.get('val')
+                key, val = key.strip(), val.strip()
             dictHoliday[key] = val
             resp = make_response(
                 redirect(url_for('.holiday', _external=True, _scheme="https")))
@@ -313,7 +319,7 @@ def holiday():
             return resp
         except Exception as e:
             print(e)
-    return render_template('holiday.html', days=json.loads(holidays))
+    return render_template('hview.html', days=json.loads(holidays))
 
 
 @app.route('/remove/<key>', methods=['GET', 'POST'])
