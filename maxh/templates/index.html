@@ -31,13 +31,13 @@
     #back{
       padding: 6px;
     }
-    #nav h4.current{
+    #nav h5.current{
       font-weight: 600;
       text-decoration: underline;
       text-underline-offset: 3.25px;
       background-color: rgba(219, 219, 219, 0.504);
 }
-#nav h4{
+#nav h5{
   padding: 13px;
 }
 .vl {
@@ -65,9 +65,9 @@
 
               <h2 class="mb-5">Relax, <br>Take a break.</h2>
               <div id="nav" class="row justify-content-center">
-              <h4 id="monthbtn" class="current"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Month</a></h4>
+              <h5 id="monthbtn" class="current"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Month</a></h4>
               <div class="vl"></div>
-              <h4 id="yearbtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Year</a></h4>
+              <h5 id="yearbtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Year</a></h4>
              </div>
               <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm"
                 name="contactForm">
@@ -125,8 +125,8 @@
               <h3 class="mb-4">Samay.</h3>
               <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays
                 :)</p>
-              <p><a href="{{ url_for('.holiday') }}">View / Edit holidays.</a></p>
-              <p><a href="{{ url_for('.about') }}">About.</a></p>
+              <p><a style="font-size: larger;" href="{{ url_for('.holiday') }}">View / Edit holidays.</a></p>
+              <p><a style="font-size: larger;" href="{{ url_for('.about') }}">About.</a></p>
             </div>
           </div>
         </div>
