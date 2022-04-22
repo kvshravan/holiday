@@ -300,7 +300,7 @@ def holiday():
                 dictHoliday[key] = val
                 dictHoliday = dict(sorted(dictHoliday.items()))
             resp = make_response(
-                redirect(url_for('.holiday', _external=True, _scheme="https")))
+                redirect(url_for('.holiday', _external=True, _scheme="http")))
             resp.set_cookie('holidays', json.dumps(dictHoliday))
             return resp
         except Exception as e:
@@ -316,7 +316,7 @@ def removeHoliday(key):
     try:
         del dictHoliday[key]
         resp = make_response(
-            redirect(url_for('holiday', _external=True, _scheme="https")))
+            redirect(url_for('holiday', _external=True, _scheme="http")))
         resp.set_cookie('holidays', json.dumps(dictHoliday))
         return resp
     except Exception as e:

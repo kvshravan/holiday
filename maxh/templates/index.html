@@ -28,19 +28,33 @@
     input[type=number] {
       -moz-appearance: textfield;
     }
+    #back{
+      padding: 6px;
+    }
+    #nav h4.current{
+      font-weight: 600;
+      background-color: lightgrey;
+}
+#nav h4{
+  padding: 13px;
+}
+.vl {
+  border-left: 3px solid #eb4d55;
+  height: 50px;
+}
   </style>
+
 </head>
 
 <body>
-  <div class="loader-wrapper">
-    <span class="loader"></span>
-  </div>
 
   <div class="content">
+    
 
     <div class="container">
-
-
+      <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
       <div class="row justify-content-center">
         <div class="col-md-10">
 
@@ -48,9 +62,13 @@
             <div class="col-lg-7 mb-5 mb-lg-0">
 
               <h2 class="mb-5">Relax, <br>Take a break.</h2>
-
+              <div id="nav" class="row justify-content-center">
+              <h4 id="monthbtn" class="current"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Month</a></h4>
+              <div class="vl"></div>
+              <h4 id="yearbtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Year</a></h4>
+             </div>
               <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm"
-                name="contactForm" onsubmit="loading()">
+                name="contactForm">
                 <div class="row">
                   <div class="col-md-12 form-group">
                     <label for="yy"><b>Year :</b></label>
@@ -65,7 +83,7 @@
                       placeholder="Enter Leaves" required>
                   </div>
                 </div>
-                <div class="row">
+                <div class="row" id="chooseMonth">
                   <div class="col-md-12 form-group">
                     <label for="mm"><b>Choose a month :</b></label>
                     <select name="mm" id="mm" class="browser-default custom-select custom-select-lg mb-3 rounded">
@@ -86,9 +104,9 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <input type="submit" name="mmm" value="Find holidays"
+                    <input type="submit" id="mmm" name="mmm" value="Find holidays"
                       class="btn btn-primary rounded-pill py-2 px-4">
-                      <input type="submit" name="yyy" value="Find holiday"
+                      <input type="submit" id="yyy" name="yyy" style="display: none;" value="Find holidays"
                       class="btn btn-primary rounded-pill py-2 px-4">
                     <span class="submitting"></span>
                   </div>
@@ -123,6 +141,27 @@
     $(window).on("load",function(){
       $(".loader-wrapper").fadeOut("slow");
     });
+    $(document).ready(function() {
+                    $('#monthbtn').click(function(e) {
+                      e.preventDefault(); 
+                      e.stopPropagation();
+                      document.getElementById('yyy').style.display = 'none';
+                      document.getElementById('mmm').style.display = 'block';
+                      document.getElementById('chooseMonth').style.display = 'block';
+                        $('#yearbtn').removeClass('current');
+                        $(this).addClass('current');
+                    });
+                    $('#yearbtn').click(function(e) {
+                      e.preventDefault(); 
+                      e.stopPropagation();
+                      document.getElementById('mmm').style.display = 'none';
+                      document.getElementById('chooseMonth').style.display = 'none';
+                      document.getElementById('yyy').style.display = 'block';
+                        $('#monthbtn').removeClass('current');
+                        $(this).addClass('current');
+                    });
+                });
+
   </script> 
 
 </body>
