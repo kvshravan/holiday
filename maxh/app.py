@@ -80,8 +80,59 @@ def isholi(day, holidays):
         return 2
     return 0
 
+def get_calenders_holidays(maxi,maxj,holidays):
+    maxholidays = []
+    highlights_dict = {}
+    leaves_dict = {}
 
-def bestTimeInAMonth(yy, mm, k, s):
+    while maxi <= maxj:
+        day = maxi
+        d = day.strftime("%d %B, %Y")
+
+        if maxi.year not in highlights_dict:
+            highlights_dict[maxi.year] = [[] for i in range(13)]
+        highlights_list = highlights_dict[maxi.year]
+
+        if len(highlights_list[maxi.month]):
+            highlights_list[maxi.month][1] = maxi.day
+        else:
+            highlights_list[maxi.month].append(maxi.day)
+            highlights_list[maxi.month].append(maxi.day)
+
+        var = isholi(maxi,holidays)
+        if not var:
+            maxholidays.append((d, 0))
+            if maxi.year not in leaves_dict:
+                leaves_dict[maxi.year] = [[] for i in range(13)]
+            leaves_list = leaves_dict[maxi.year]
+            leaves_list[maxi.month].append(maxi.day)
+        elif var == 1:
+            maxholidays.append((d, 1))
+        else:
+            maxholidays.append((d, holidays[str(day)]))
+
+        maxi += timedelta(days=1)
+
+    calendars = []
+
+    for year in highlights_dict.keys():
+        highlights_list = highlights_dict[year]
+        for i in range(1,len(highlights_list)):
+            if len(highlights_list[i]):
+                leaves_list = leaves_dict[year]
+                c = HighlightedCalendar(highlight=highlights_list[i],
+                                leaves=leaves_list[i]).formatmonth(
+                                    year, i)
+                calendars.append(c)
+    
+    highlights_dict.clear()
+    leaves_dict.clear()
+
+
+    return maxholidays, calendars
+
+
+def bestTimeInAMonth(yy, mm, k):
     today = date.today()
     if today.month == mm:
         i = j = today
@@ -116,141 +167,59 @@ def bestTimeInAMonth(yy, mm, k, s):
         maxj = j
 
     maxj -= timedelta(days=1)
-
-    maxholidays = []
-    highlights_dict = {}
-    leaves_dict = {}
-
-    while maxi <= maxj:
-        day = maxi
-        d = day.strftime("%d %B, %Y")
-
-        if maxi.year not in highlights_dict:
-            highlights_dict[maxi.year] = [[] for i in range(13)]
-        highlights_list = highlights_dict[maxi.year]
-
-        if len(highlights_list[maxi.month]):
-            highlights_list[maxi.month][1] = maxi.day
-        else:
-            highlights_list[maxi.month].append(maxi.day)
-            highlights_list[maxi.month].append(maxi.day)
-
-        var = isholi(maxi,holidays)
-        if not var:
-            maxholidays.append((d, 0))
-            if maxi.year not in leaves_dict:
-                leaves_dict[maxi.year] = [[] for i in range(13)]
-            leaves_list = leaves_dict[maxi.year]
-            leaves_list[maxi.month].append(maxi.day)
-        elif var == 1:
-            maxholidays.append((d, 1))
-        else:
-            maxholidays.append((d, holidays[str(day)]))
-
-        maxi += timedelta(days=1)
-
-    
-    print(highlights_dict)
-    print(leaves_dict)
-
-    calendars = []
-
-    for year in highlights_dict.keys():
-        highlights_list = highlights_dict[year]
-        for i in range(1,len(highlights_list)):
-            if len(highlights_list[i]):
-                leaves_list = leaves_dict[year]
-                c = HighlightedCalendar(highlight=highlights_list[i],
-                                leaves=leaves_list[i]).formatmonth(
-                                    year, i)
-                calendars.append(c)
-    
-    highlights_dict.clear()
-    leaves_dict.clear()
+    return get_calenders_holidays(maxi,maxj,holidays)
 
 
-    return maxholidays, calendars
-
-
-def topChoices(heap, storage, s):
-    m = 20  # top m choices
-    holidays = request.cookies.get('holidays')
-    cookie_holidays = request.cookies.get('holidays')
-    holidays = json.loads(cookie_holidays)
-    while m:
+def topChoices(heap, holidays):
+    choices = CHOICES  # top m choices
+    contextList = []
+    heapq.heapify(heap)
+    while choices:
         h, maxi, maxj = heapq.heappop(heap)
-        h *= -1
-        s += "<br>Maximum holidays - <b>" + str(h) + "</b> <br>"
-        s += "<h4>from " + maxi.strftime("%d %B, %Y")
-        s += " to " + maxj.strftime("%d %B, %Y") + "<br></h4>"
-        maxmonth = maxj.month + 1
-        if maxj.year > maxi.year:
-            maxmonth = 13
-        for i in range(maxi.month, maxmonth):
-            s += (calendar.HTMLCalendar().formatmonth(maxi.year, i))
-            s += "<br>"
-        while maxi < maxj:
-            day = maxi
-            s += "<br>"
-            var = storage[maxi.month][maxi.day]
-            if not var:
-                s = s + "<b>" + str(day) + " - Leave</b>"
-            else:
-                if var == 1:
-                    s = s + str(day) + " - Holiday (Weekend)"
-                else:
-                    s = s + str(day) + " - Holiday" + \
-                        "(" + holidays[str(day)] + ")"
-            maxi += timedelta(days=1)
-        s += "<br>-----------------------------------------------------------------------------<br>"
-        m -= 1
-    return s
+        maxj -= timedelta(days=1)
+        contextList.append(get_calenders_holidays(maxi,maxj,holidays))
+        choices -=1
+    return contextList
 
 
-def bestTimeInYear(yy, k, s):
-    stack = []
+def bestTimeInYear(yy, k):
+    yearList = []
     k = min(k, 366)
-    s += "<br> Here are the best 20 choices picked for you with atmost " + \
-        str(k) + " leaves starting from tomorrow :) <br>"
-    storage = [[0 for i in range(1, 33)] for j in range(1, 14)]
-    heapq.heapify(stack)
     today = date.today()
     today += timedelta(days=1)
     mm, dd = today.month, today.day
     i = date(yy, mm, dd)
     j = date(yy, mm, dd)
+    cookie_holidays = request.cookies.get('holidays')
+    holidays = json.loads(cookie_holidays)
     while j.year <= yy:
-        storage[j.month][j.day] = isholi(j)
-        if not storage[j.month][j.day]:
+        if not isholi(j,holidays):
             k -= 1
+        print('Date',i,j,k,isholi(j,holidays))
         if k < 0:
-            heapq.heappush(stack, (-(j - i).days, i, j))
-            while i <= j and storage[i.month][i.day]:
+            yearList.append((-(j - i).days, i, j))
+            while i <= j and isholi(i,holidays):
                 i += timedelta(days=1)
             k += 1
             i += timedelta(days=1)
-        heapq.heappush(stack, (-(j - i).days, i, j))
+        yearList.append((-(j - i).days, i, j))
+        
         j += timedelta(days=1)
-    heapq.heappush(stack, (-(j - i).days, i, j))
-    return topChoices(stack, storage, s)
+    yearList.append((-(j - i).days, i, j))
+    return topChoices(yearList, holidays)
 
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Render the page
-    c = get_country(get_ip())
-    print(c)
-    highlight = range(1, 7)
     if request.method == "POST":
         yy = int(request.form.get('yy'))
         mm = int(request.form.get('mm'))
         k = int(request.form.get('k'))
-        s = ''
         if 'mmm' in request.form:
-            maxholidays, calendars = bestTimeInAMonth(yy, mm, k, s)
-        else:
-            s = bestTimeInYear(yy, k, s)
-        return render_template(
+            maxholidays, calendars = bestTimeInAMonth(yy, mm, k)
+            #print(bestTimeInYear(yy, k))
+            return render_template(
             'view.html',
             noHolidays=len(maxholidays),
             k=k,
@@ -259,14 +228,27 @@ def home():
             calendars=calendars,
             last=maxholidays[len(maxholidays) - 1][0],
         )
+        else:
+            yearList = bestTimeInYear(yy, k)
+            return render_template(
+            'yearView.html',
+            yearList = yearList[1:],
+            k=k,
+            choices=CHOICES,
+            year=yy,
+            )
+        
     resp = make_response(render_template('index.html'))
     if 'holidays' not in request.cookies:
         country = get_country(get_ip())
         if country is None:
             country = DEFAULT_COUNTRY_CODE 
-    
+        init_holidays = {}
         current_year = date.today().year
         init_holidays = get_holidays(country,current_year)
+        if country == DEFAULT_COUNTRY_CODE:
+            init_holidays |= allHolidays
+            init_holidays = dict(sorted(init_holidays.items()))
         resp.set_cookie('holidays', json.dumps(init_holidays))
     return resp
 
@@ -275,6 +257,8 @@ def get_holidays(country,current_year):
     country_holidays = {}
     for day,name in national_holidays.items():
         country_holidays[str(day)] = name
+    if country != DEFAULT_COUNTRY_CODE:
+        country_holidays = dict(sorted(country_holidays.items()))
     country_holidays['All-Saturdays'] = " "
     country_holidays['All-Sundays'] = " "
     return country_holidays
@@ -309,12 +293,14 @@ def holiday():
                 key, val = request.form.get('week'), ' '
                 print(request.form)
                 key = key.strip()
+                dictHoliday[key] = val
             else:
                 key, val = request.form.get('pick'), request.form.get('val')
                 key, val = key.strip(), val.strip()
-            dictHoliday[key] = val
+                dictHoliday[key] = val
+                dictHoliday = dict(sorted(dictHoliday.items()))
             resp = make_response(
-                redirect(url_for('.holiday', _external=True, _scheme="https")))
+                redirect(url_for('.holiday', _external=True, _scheme="http")))
             resp.set_cookie('holidays', json.dumps(dictHoliday))
             return resp
         except Exception as e:
@@ -330,7 +316,7 @@ def removeHoliday(key):
     try:
         del dictHoliday[key]
         resp = make_response(
-            redirect(url_for('holiday', _external=True, _scheme="https")))
+            redirect(url_for('holiday', _external=True, _scheme="http")))
         resp.set_cookie('holidays', json.dumps(dictHoliday))
         return resp
     except Exception as e:
@@ -371,6 +357,7 @@ allHolidays = {
     "All-Sundays": " "
 }
 DEFAULT_COUNTRY_CODE = 'IN'
+CHOICES = 10
 
 if __name__ == '__main__':
     # Run the app server on localhost:5000

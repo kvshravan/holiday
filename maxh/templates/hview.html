@@ -41,6 +41,13 @@ a:hover {
 a:active {
   color: blue;
 }
+#back{
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background-color: whitesmoke;
+
+}
   </style>  
   </head>
   <body>
@@ -49,7 +56,7 @@ a:active {
       </div>
     
     <div class="container"> 
-            <h3><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Back</a></h3>
+            <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Back</a></h3>
                 <fieldset>
                    <legend><p style="font-weight: 750;font-size: larger;">Holidays list</p></legend>
                    {% for dkey,val in days.items() %}
