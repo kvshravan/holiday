@@ -195,7 +195,6 @@ def bestTimeInYear(yy, k):
     while j.year <= yy:
         if not isholi(j,holidays):
             k -= 1
-        print('Date',i,j,k,isholi(j,holidays))
         if k < 0:
             yearList.append((-(j - i).days, i, j))
             while i <= j and isholi(i,holidays):
@@ -291,7 +290,6 @@ def holiday():
         try:
             if 'mul' in request.form:
                 key, val = request.form.get('week'), ' '
-                print(request.form)
                 key = key.strip()
                 dictHoliday[key] = val
             else:
@@ -300,7 +298,7 @@ def holiday():
                 dictHoliday[key] = val
                 dictHoliday = dict(sorted(dictHoliday.items()))
             resp = make_response(
-                redirect(url_for('.holiday', _external=True, _scheme="http")))
+                redirect(url_for('.holiday', _external=True, _scheme="https")))
             resp.set_cookie('holidays', json.dumps(dictHoliday))
             return resp
         except Exception as e:
@@ -316,7 +314,7 @@ def removeHoliday(key):
     try:
         del dictHoliday[key]
         resp = make_response(
-            redirect(url_for('holiday', _external=True, _scheme="http")))
+            redirect(url_for('holiday', _external=True, _scheme="https")))
         resp.set_cookie('holidays', json.dumps(dictHoliday))
         return resp
     except Exception as e:
@@ -326,10 +324,6 @@ def removeHoliday(key):
 
 @app.route('/about', methods=['GET'])
 def about():
-    print('Hello')
-    us_h = hm.country_holidays('IN',years=[2022,2023])
-    for day in us_h.items():
-        print(day)
     return render_template('about.html')
 
 

@@ -33,14 +33,16 @@
     }
     #nav h4.current{
       font-weight: 600;
-      background-color: lightgrey;
+      text-decoration: underline;
+      text-underline-offset: 3.25px;
+      background-color: rgba(219, 219, 219, 0.504);
 }
 #nav h4{
   padding: 13px;
 }
 .vl {
   border-left: 3px solid #eb4d55;
-  height: 50px;
+  height: 55px;
 }
   </style>
 
@@ -123,7 +125,8 @@
               <h3 class="mb-4">Samay.</h3>
               <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays
                 :)</p>
-              <p><a href="{{ url_for('.holiday') }}">View / Edit holidays</a></p>
+              <p><a href="{{ url_for('.holiday') }}">View / Edit holidays.</a></p>
+              <p><a href="{{ url_for('.about') }}">About.</a></p>
             </div>
           </div>
         </div>
