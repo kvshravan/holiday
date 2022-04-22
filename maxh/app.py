@@ -284,6 +284,8 @@ def get_country(ip):
 @app.route('/holiday', methods=['GET', 'POST'])
 def holiday():
     holidays = request.cookies.get('holidays')
+    if holidays is None:
+        return redirect(url_for('.home'))
     if request.method == "POST":
         holidays = request.cookies.get('holidays')
         dictHoliday = json.loads(holidays)
