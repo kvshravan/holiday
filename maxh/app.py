@@ -114,14 +114,17 @@ def get_calenders_holidays(maxi,maxj,holidays):
         maxi += timedelta(days=1)
 
     calendars = []
-
     for year in highlights_dict.keys():
         highlights_list = highlights_dict[year]
         for i in range(1,len(highlights_list)):
             if len(highlights_list[i]):
-                leaves_list = leaves_dict[year]
+                if year in leaves_dict:
+                    leaves_list = leaves_dict[year]
+                    leaves = leaves_list[i]
+                else:
+                    leaves = []
                 c = HighlightedCalendar(highlight=highlights_list[i],
-                                leaves=leaves_list[i]).formatmonth(
+                                leaves=leaves).formatmonth(
                                     year, i)
                 calendars.append(c)
     
