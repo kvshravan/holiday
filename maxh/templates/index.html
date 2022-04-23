@@ -17,6 +17,8 @@
   <!-- Style -->
   <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
 
+  <link rel="stylesheet" href="{{ url_for('static',filename='fonts/font-awesome-4.7.0/css/font-awesome.min.css') }}">
+
   <title>Samay - Home</title>
   <style>
     input::-webkit-outer-spin-button,
@@ -43,6 +45,15 @@
 .vl {
   border-left: 3px solid #eb4d55;
   height: 50px;
+}
+#mob {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  #mob {
+    display: block;
+  }
 }
   </style>
 
@@ -111,14 +122,11 @@
                       class="btn btn-primary rounded-pill py-2 px-4">
                     <span class="submitting"></span>
                   </div>
+                  <br>
                 </div>
+                <p id="mob" align="right" style="padding-top:5px ;"><a style="font-size: medium;" href="">Scroll down <i class="fa fa-angle-double-down" style="font-size:24px;color:red"></i>
+                </a></p>
               </form>
-
-              <div id="form-message-warning mt-4"></div>
-              <div id="form-message-success">
-                Your message was sent, thank you!
-              </div>
-
             </div>
             <div class="col-lg-4 ml-auto">
               <h3 class="mb-4">Samay.</h3>
