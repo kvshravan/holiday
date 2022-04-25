@@ -146,8 +146,13 @@ def bestTimeInAMonth(yy, mm, k):
 
     maxj = maxi = date(yy, mm, 1)
 
+    holidays = {}
     cookie_holidays = request.cookies.get('holidays')
-    holidays = json.loads(cookie_holidays)
+    if cookie_holidays is None:
+        holidays['All-Saturdays'] = " "
+        holidays['All-Sundays'] = " "
+    else:
+        holidays = json.loads(cookie_holidays)
 
     while i.month <= mm and i.year <= yy:
         if not isholi(j, holidays):
@@ -193,8 +198,13 @@ def bestTimeInYear(yy, k):
     mm, dd = today.month, today.day
     i = date(yy, mm, dd)
     j = date(yy, mm, dd)
+    holidays = {}
     cookie_holidays = request.cookies.get('holidays')
-    holidays = json.loads(cookie_holidays)
+    if cookie_holidays is None:
+        holidays['All-Saturdays'] = " "
+        holidays['All-Sundays'] = " "
+    else:
+        holidays = json.loads(cookie_holidays)
     while j.year <= yy:
         if not isholi(j,holidays):
             k -= 1
