@@ -137,7 +137,7 @@ def get_calenders_holidays(maxi,maxj,holidays):
 
 def bestTimeInAMonth(yy, mm, k):
     today = date.today()
-    if today.month == mm:
+    if today.month == mm and today.year == yy:
         i = j = today
     else:
         i = j = date(yy, mm, 1)
