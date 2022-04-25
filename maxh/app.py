@@ -234,7 +234,7 @@ def home():
             yearList = bestTimeInYear(yy, k)
             return render_template(
             'yearView.html',
-            yearList = yearList[1:],
+            yearList = yearList,
             k=k,
             choices=CHOICES,
             year=yy,
@@ -255,14 +255,18 @@ def home():
     return resp
 
 def get_holidays(country,current_year):
-    national_holidays = hm.country_holidays(country,years=[current_year,current_year+1])
     country_holidays = {}
-    for day,name in national_holidays.items():
-        country_holidays[str(day)] = name
-    if country != DEFAULT_COUNTRY_CODE:
-        country_holidays = dict(sorted(country_holidays.items()))
     country_holidays['All-Saturdays'] = " "
     country_holidays['All-Sundays'] = " "
+    try:
+        national_holidays = hm.country_holidays(country,years=[current_year,current_year+1])
+        for day,name in national_holidays.items():
+            country_holidays[str(day)] = name
+        if country != DEFAULT_COUNTRY_CODE:
+            country_holidays = dict(sorted(country_holidays.items()))
+    except Exception as e:
+        print(e)
+    
     return country_holidays
 
 
