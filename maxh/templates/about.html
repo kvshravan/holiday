@@ -1,21 +1,49 @@
-<!DOCTYPE html>
- <html>
- <head>
-  <title>Samay - About! :)</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-.container{
-  padding: 10px;
-}
-</style>
- <body>
-   <div class="container">
-     <fieldset>
-        <legend>About Samay</legend>
-        <p> Version 1.0,<b> Venkata Shravan </b> </p>
-        <p>Get maximum consecutive holidays with the least number of work leaves, that is what we want if we wanna take a vacation right? :)</p>
-        <p>Profiles :</p><a target="_blank" href="https://www.linkedin.com/in/kandadishravan/">Linkedin</a>&nbsp;<a target="_blank" href="https://twitter.com/kandadi_shravan">Twitter</a>
-     </fieldset>
-</div>
- </body>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <title>Samay </title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+      .container{
+          padding-left: 1%;
+      }
+  </style>  
+  </head>
+  <body>
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
+    
+    <div class="container"> 
+                <fieldset>
+                   <legend><p style="font-weight: 750;font-size: larger;">About Samay</p></legend>
+                   <p> Version 1.0,<b style="color: red;"> Venkata Shravan </b> </p>
+                    <p>Get maximum consecutive holidays with the least number of work leaves, that is what we want if we wanna take a vacation right? :)</p>
+                    <p>Profiles :</p>&nbsp;<a style="color: red;" target="_blank" href="https://github.com/kvshravan"><u>Github</u></a>&nbsp;<a style="color: red;" target="_blank" href="https://www.linkedin.com/in/kandadishravan/"><u>Linkedin</u></a>&nbsp;<a style="color: red;" target="_blank" href="https://twitter.com/kandadi_shravan"><u>Twitter</u></a>
+                </fieldset>
+            
+      </div>
+      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+      <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+      </script> 
+  </body>
 </html>

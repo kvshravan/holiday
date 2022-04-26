@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <title>Samay </title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+      .container{
+          padding-left: 1%;
+      }
+      table{
+          display: inline-table;
+          background-color: whitesmoke;
+          border: 1px;
+          border-radius: 20px;
+          font-size: large;
+          padding: 5px;
+      }
+      tr:first-child{
+          background-color: white;
+      }
+      tr:nth-child(2){
+          background-color: white;
+      }
+  </style>  
+  </head>
+  <body>
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
+    
+    <div class="container"> 
+            <h4> Here is the best pick for you with atmost <span style='color: #eb4d55;'>{{k}} </span> leaves between {{start}} and {{end}} :)</h4>
+            {% for calendar in calendars%}
+            {{calendar | safe}}
+            {% endfor %}
+            <span style='color: green;'> <p style="font-weight: 750;">From {{holidays[0][0]}} - {{last}}</p></span>
+                <b><p>Maximum consecutive holidays - {{noHolidays}}</p></b>
+            {% for holiday in holidays %}
+                {% if holiday[1] == 0 %}
+                <span style='color: red;'><p style="font-weight: 750;">{{holiday[0]}} - Leave</p></span>
+                {% elif holiday[1] == 1 %}
+                <p style="font-weight: 750;">{{holiday[0]}} - Holiday (Weekend/Multiple)</p>
+                {% else %}
+                <p style="font-weight: 750;">{{holiday[0]}} - Holiday ({{holiday[1]}})</p>
+                {% endif %}
+            {% endfor %}
+            <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
+            
+      </div>
+      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+      <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+      </script> 
+  </body>
+</html>

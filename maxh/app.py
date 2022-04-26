@@ -1,10 +1,11 @@
 from ipaddress import ip_address
 from re import L
+import re
 from unittest.mock import DEFAULT
 import requests
 from flask import Flask, request, render_template, make_response, redirect, url_for
 import calendar
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta
 import heapq
 import json
 import holidays as hm
@@ -177,6 +178,41 @@ def bestTimeInAMonth(yy, mm, k):
     maxj -= timedelta(days=1)
     return get_calenders_holidays(maxi,maxj,holidays)
 
+def bestTimeInADateRange(start,end,k):
+    i = j = maxi = maxj = start
+    k = min(k, 366)
+
+    holidays = {}
+    cookie_holidays = request.cookies.get('holidays')
+    if cookie_holidays is None:
+        holidays['All-Saturdays'] = " "
+        holidays['All-Sundays'] = " "
+    else:
+        holidays = json.loads(cookie_holidays)
+
+    while j<=end:
+        if not isholi(j, holidays):
+            k -= 1
+        if k < 0:
+            if (j - i).days > (maxj - maxi).days:
+                maxi = i
+                maxj = j
+            while i <= j and isholi(i, holidays):
+                i += timedelta(days=1)
+            k += 1
+            i += timedelta(days=1)
+        if (j - i).days > (maxj - maxi).days:
+            maxi = i
+            maxj = j
+        j += timedelta(days=1)
+
+    if (j - i).days > (maxj - maxi).days:
+        maxi = i
+        maxj = j
+
+    maxj -= timedelta(days=1)
+    return get_calenders_holidays(maxi,maxj,holidays)
+
 
 def topChoices(heap, holidays):
     choices = CHOICES  # top m choices
@@ -225,30 +261,50 @@ def bestTimeInYear(yy, k):
 def home():
     # Render the page
     if request.method == "POST":
-        yy = int(request.form.get('yy'))
-        mm = int(request.form.get('mm'))
-        k = int(request.form.get('k'))
-        if 'mmm' in request.form:
-            maxholidays, calendars = bestTimeInAMonth(yy, mm, k)
-            #print(bestTimeInYear(yy, k))
+        if 'rrr' in request.form:
+            start = request.form.get('start')
+            end = request.form.get('end')
+            k = int(request.form.get('k'))
+            dstart = datetime.strptime(start,"%Y-%m-%d").date()
+            dend = datetime.strptime(end,"%Y-%m-%d").date()
+            maxholidays, calendars = bestTimeInADateRange(dstart,dend,k)
             return render_template(
-            'view.html',
-            noHolidays=len(maxholidays),
-            k=k,
-            month=calendar.month_name[mm],
-            holidays=maxholidays,
-            calendars=calendars,
-            last=maxholidays[len(maxholidays) - 1][0],
-        )
-        else:
-            yearList = bestTimeInYear(yy, k)
-            return render_template(
-            'yearView.html',
-            yearList = yearList,
-            k=k,
-            choices=CHOICES,
-            year=yy,
+                'dateview.html',
+                noHolidays=len(maxholidays),
+                k=k,
+                start = start,
+                end = end,
+                holidays=maxholidays,
+                calendars=calendars,
+                last=maxholidays[len(maxholidays) - 1][0],
             )
+            
+            
+        else:
+            yy = int(request.form.get('yy'))
+            mm = int(request.form.get('mm'))
+            k = int(request.form.get('k'))
+            if 'mmm' in request.form:
+                maxholidays, calendars = bestTimeInAMonth(yy, mm, k)
+                #print(bestTimeInYear(yy, k))
+                return render_template(
+                'view.html',
+                noHolidays=len(maxholidays),
+                k=k,
+                month=calendar.month_name[mm],
+                holidays=maxholidays,
+                calendars=calendars,
+                last=maxholidays[len(maxholidays) - 1][0],
+            )
+            else:
+                yearList = bestTimeInYear(yy, k)
+                return render_template(
+                'yearView.html',
+                yearList = yearList,
+                k=k,
+                choices=CHOICES,
+                year=yy,
+                )
         
     resp = make_response(render_template('index.html'))
     if 'holidays' not in request.cookies:

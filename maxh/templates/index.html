@@ -42,10 +42,6 @@
 #nav h5{
   padding: 13px;
 }
-.vl {
-  border-left: 3px solid #eb4d55;
-  height: 50px;
-}
 #mob {
   display: none;
 }
@@ -76,9 +72,43 @@
               <h2 class="mb-5">Relax, <br>Take a break.</h2>
               <div id="nav" class="row justify-content-center">
               <h5 id="monthbtn" class="current"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Month</a></h4>
-              <div class="vl"></div>
               <h5 id="yearbtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Year</a></h4>
+              <h5 id="rangebtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Range</a></h4>
              </div>
+             <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="dateForm"
+             name="dateForm" style="display: none;">
+             <div class="row" name="sdiv" id="sdiv">
+              <div class="col-md-12 form-group">
+                <label for="start"><b>Start Date :</b></label>
+                <input type="date" class="form-control" name="start" id="start"
+                  placeholder="Enter Start Date" required>
+              </div>
+            </div>
+              <div class="row" name="ediv" id="ediv" > 
+                <div class="col-md-12 form-group">
+                  <label for="end"><b>End Date :</b></label>
+                  <input type="date" class="form-control" name="end" id="end"
+                    placeholder="Enter End date" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12 form-group">
+                  <label for="k"><b>Maximum Affordable leaves :</b></label>
+                  <input type="number" inputmode="numeric" class="form-control" name="k" id="k"
+                    placeholder="Enter Leaves" required>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <input type="submit" id="rrr" name="rrr" value="Find holidays"
+                    class="btn btn-primary rounded-pill py-2 px-4">
+                  <span class="submitting"></span>
+                </div>
+                <br>
+              </div>
+              <p id="mob" align="right" style="padding: 0;font-size: medium; font-weight: 450; color: #eb4d55;" onclick="scrollDown()">Scroll down <i class="fa fa-angle-double-down" style="font-size:24px;color:red"></i>
+              </p>
+             </form>
               <form action="" method="post" class="border-right pr-5 mb-5" method="post" id="contactForm"
                 name="contactForm">
                 <div class="row">
@@ -90,11 +120,12 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <label for="k"><b>Maximum Affordable days of leave :</b></label>
+                    <label for="k"><b>Maximum Affordable leaves :</b></label>
                     <input type="number" inputmode="numeric" class="form-control" name="k" id="k"
                       placeholder="Enter Leaves" required>
                   </div>
                 </div>
+                
                 <div class="row" id="chooseMonth">
                   <div class="col-md-12 form-group">
                     <label for="mm"><b>Choose a month :</b></label>
@@ -156,18 +187,33 @@
                       e.preventDefault(); 
                       e.stopPropagation();
                       document.getElementById('yyy').style.display = 'none';
+                      document.getElementById('dateForm').style.display = 'none';
+                      document.getElementById('contactForm').style.display = 'block';
                       document.getElementById('mmm').style.display = 'block';
                       document.getElementById('chooseMonth').style.display = 'block';
                         $('#yearbtn').removeClass('current');
+                        $('#rangebtn').removeClass('current');
                         $(this).addClass('current');
                     });
                     $('#yearbtn').click(function(e) {
                       e.preventDefault(); 
                       e.stopPropagation();
                       document.getElementById('mmm').style.display = 'none';
+                      document.getElementById('dateForm').style.display = 'none';
                       document.getElementById('chooseMonth').style.display = 'none';
+                      document.getElementById('contactForm').style.display = 'block';
                       document.getElementById('yyy').style.display = 'block';
                         $('#monthbtn').removeClass('current');
+                        $('#rangebtn').removeClass('current');
+                        $(this).addClass('current');
+                    });
+                    $('#rangebtn').click(function(e) {
+                      e.preventDefault(); 
+                      e.stopPropagation();
+                      document.getElementById('contactForm').style.display = 'none';
+                      document.getElementById('dateForm').style.display = 'block';
+                        $('#monthbtn').removeClass('current');
+                        $('#yearbtn').removeClass('current');
                         $(this).addClass('current');
                     });
                 });
