@@ -2,6 +2,7 @@ from ipaddress import ip_address
 from re import L
 import re
 from unittest.mock import DEFAULT
+from xml.sax import default_parser_list
 import requests
 from flask import Flask, request, render_template, make_response, redirect, url_for
 import calendar
@@ -305,14 +306,13 @@ def home():
                 choices=CHOICES,
                 year=yy,
                 )
-        
-    resp = make_response(render_template('index.html'))
+    current_year = date.today().year
+    resp = make_response(render_template('index.html',year=current_year))
     if 'holidays' not in request.cookies:
         country = get_country(get_ip())
         if country is None:
             country = DEFAULT_COUNTRY_CODE 
         init_holidays = {}
-        current_year = date.today().year
         init_holidays = get_holidays(country,current_year)
         if country == DEFAULT_COUNTRY_CODE:
             init_holidays |= allHolidays
