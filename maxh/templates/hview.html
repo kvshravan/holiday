@@ -90,7 +90,7 @@
           </select>
         </div>
         <br>
-        <div style="padding: 5px;">
+        <div id="sdiv" style="padding: 5px;">
           <label for="subdiv"><b>Sub Division :</b></label>
           <select name="subdiv" style="padding: 20px;" id="subdiv" class="js-example-basic-single"
             onchange="func();this.form.submit()">
@@ -101,7 +101,7 @@
           </select>
         </div>
         <span id="textload" style='color: red;display: none;'>
-          <p style="font-weight: 750;">Loading...</p>
+          <p style="font-weight: 750;font-size: larger;">Loading...</p>
         </span>
       </form>
     </fieldset>
@@ -160,6 +160,7 @@
       $('.js-example-basic-single').select2();
     });
     function func() {
+      document.getElementById("sdiv").style.display = "none";
       document.getElementById("textload").style.display = "block";
     }
   </script>
