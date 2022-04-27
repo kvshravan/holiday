@@ -82,7 +82,7 @@
     <form method="post" id="countryForm" action="">
       <div style="padding: 5px;">
       <label for="country"><b>Country :</b></label>
-      <select styuname="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
+      <select name="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
         <option value="{{defaultCountry[0]}}">{{defaultCountry[1]}}</option>
         {% for country in countries %}
         <option value="{{country[0]}}">{{country[1]}}</option>
