@@ -2,3 +2,4 @@ flask
 gunicorn
 requests
 holidays
+pycountry
