@@ -62,12 +62,6 @@ class HighlightedCalendar(calendar.HTMLCalendar):
         return ''.join(v)
 
 
-@app.after_request
-def add_header(response):
-    response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
-    return response
-
-
 def isholi(day, holidays):
     days = (0, 1, 2, 3, 4, 5, 6)
     dictKeys = ("All-Mondays", "All-Tuesdays", "All-Wednesdays",
