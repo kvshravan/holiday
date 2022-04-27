@@ -80,13 +80,17 @@
         <p style="font-weight: 750;font-size: larger;">Change Country</p>
       </legend>
     <form method="post" id="countryForm" action="">
+      <div style="padding: 5px;">
       <label for="country"><b>Country :</b></label>
-      <select name="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
+      <select styuname="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
         <option value="{{defaultCountry[0]}}">{{defaultCountry[1]}}</option>
         {% for country in countries %}
         <option value="{{country[0]}}">{{country[1]}}</option>
         {% endfor %}
       </select>
+    </div>
+      <br>
+      <div style="padding: 5px;">
       <label for="subdiv"><b>Sub Division :</b></label>
       <select name="subdiv" style="padding: 20px;" id="subdiv" class="js-example-basic-single" onchange="this.form.submit()">
         <option value="{{defaultSub}}">{{defaultSub}}</option>
@@ -94,6 +98,8 @@
         <option value="{{subdiv}}">{{subdiv}}</option>
         {% endfor %}
       </select>
+    </div>
+
     </form>
   </fieldset>
     <fieldset>
