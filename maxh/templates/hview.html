@@ -79,7 +79,7 @@
       <legend>
         <p style="font-weight: 750;font-size: larger;">Change Country</p>
       </legend>
-    <form method="post" id="countryForm" action="">
+    <form method="post" id="countryForm" action="" onsubmit="load()">
       <div style="padding: 5px;">
       <label for="country"><b>Country :</b></label>
       <select name="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
@@ -113,7 +113,7 @@
     </fieldset>
     <br>
     <fieldset>
-      <form method="post" action="">
+      <form method="post" action="" onsubmit="load()">
         <legend>
           <p style="font-weight: 750;font-size: larger;">Add a holiday</p>
         </legend>
@@ -129,7 +129,7 @@
     </fieldset>
     <br>
     <fieldset>
-      <form method="post" action="">
+      <form method="post" action="" onsubmit="load()">
         <legend>
           <p style="font-weight: 750;font-size: larger;">Add Multiple Weekdays</p>
         </legend>
@@ -156,6 +156,9 @@
       $(".loader-wrapper").fadeOut("slow");
       $('.js-example-basic-single').select2();
     });
+    function load() {
+      document.getElementsByClassName('loader-wrapper').style.display = 'block';
+  }
   </script>
 </body>
 
