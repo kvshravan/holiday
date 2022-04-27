@@ -302,10 +302,10 @@ def home():
                     year=yy,
                 )
     current_year = date.today().year
-    resp = make_response(render_template('index.html', year=current_year))
     country = get_country(get_ip())
     if country is None:
         country = DEFAULT_COUNTRY_CODE
+    resp = make_response(render_template('index.html', year=current_year))
     if 'holidays' not in request.cookies:
         init_holidays = {}
         init_holidays = get_holidays(country, current_year,'-')
@@ -461,24 +461,6 @@ def removeHoliday(key):
     return redirect(url_for('holiday'))
 
 
-@app.route('/l/<country>/<subdiv>/<key>', methods=['GET'])
-def shortLink(key):
-    key = key.strip()
-    if key[0] == 'S':
-        endind = key.find('E')
-        kind = key.find('K')
-
-        start = key[1:endind]
-        end = key[endind + 1:kind]
-        k = int(key[kind + 1::])
-        print(start, end, k)
-        dstart = datetime.strptime(key[1:index], "%Y-%m-%d").date()
-        dend = datetime.strptime(key[index + 1::], "%Y-%m-%d").date()
-
-    else:
-        return 'j'
-
-
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
@@ -512,4 +494,4 @@ CHOICES = 10
 
 if __name__ == '__main__':
     # Run the app server on localhost:5000
-    app.run(debug=True)
+    app.run()
