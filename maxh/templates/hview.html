@@ -79,29 +79,32 @@
       <legend>
         <p style="font-weight: 750;font-size: larger;">Change Country</p>
       </legend>
-    <form method="post" id="countryForm" action="" onsubmit="load()">
-      <div style="padding: 5px;">
-      <label for="country"><b>Country :</b></label>
-      <select name="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
-        <option value="{{defaultCountry[0]}}">{{defaultCountry[1]}}</option>
-        {% for country in countries %}
-        <option value="{{country[0]}}">{{country[1]}}</option>
-        {% endfor %}
-      </select>
-    </div>
-      <br>
-      <div style="padding: 5px;">
-      <label for="subdiv"><b>Sub Division :</b></label>
-      <select name="subdiv" style="padding: 20px;" id="subdiv" class="js-example-basic-single" onchange="this.form.submit()">
-        <option value="{{defaultSub}}">{{defaultSub}}</option>
-        {% for subdiv in subdivs %}
-        <option value="{{subdiv}}">{{subdiv}}</option>
-        {% endfor %}
-      </select>
-    </div>
-
-    </form>
-  </fieldset>
+      <form method="post" id="countryForm" action="">
+        <div style="padding: 5px;">
+          <label for="country"><b>Country :</b></label>
+          <select name="country" id="country" class="js-example-basic-single" onchange="func();this.form.submit()">
+            <option value="{{defaultCountry[0]}}">{{defaultCountry[1]}}</option>
+            {% for country in countries %}
+            <option value="{{country[0]}}">{{country[1]}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <br>
+        <div style="padding: 5px;">
+          <label for="subdiv"><b>Sub Division :</b></label>
+          <select name="subdiv" style="padding: 20px;" id="subdiv" class="js-example-basic-single"
+            onchange="func();this.form.submit()">
+            <option value="{{defaultSub}}">{{defaultSub}}</option>
+            {% for subdiv in subdivs %}
+            <option value="{{subdiv}}">{{subdiv}}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <span id="textload" style='color: red;display: none;'>
+          <p style="font-weight: 750;">Loading...</p>
+        </span>
+      </form>
+    </fieldset>
     <fieldset>
       <legend>
         <p style="font-weight: 750;font-size: larger;">Holidays list</p>
@@ -156,9 +159,9 @@
       $(".loader-wrapper").fadeOut("slow");
       $('.js-example-basic-single').select2();
     });
-    function load() {
-      document.getElementsByClassName('loader-wrapper').style.display = 'block';
-  }
+    function func() {
+      document.getElementById("textload").style.display = "block";
+    }
   </script>
 </body>
 
