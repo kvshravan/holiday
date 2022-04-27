@@ -23,6 +23,14 @@
       .container{
           padding-left: 1%;
       }
+      #back {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background-color: whitesmoke;
+      text-decoration: underline;
+      text-underline-offset: 3.25px;
+    }
   </style>  
   </head>
   <body>
@@ -31,6 +39,7 @@
       </div>
     
     <div class="container"> 
+      <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;'>Back</a></h3>
                 <fieldset>
                    <legend><p style="font-weight: 750;font-size: larger;">About Samay</p></legend>
                    <p> Version 1.0,<b style="color: red;"> Venkata Shravan </b> </p>

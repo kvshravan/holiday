@@ -61,6 +61,14 @@
                 display: block;
             }
         }
+        #back {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background-color: whitesmoke;
+      text-decoration: underline;
+      text-underline-offset: 3.25px;
+    }
     </style>
 </head>
 
@@ -70,6 +78,7 @@
     </div>
 
     <div class="container">
+        <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;'>Back</a></h3>
         <h4> Here is the best pick for you with atmost <span style='color: #eb4d55;'>{{k}} </span> leaves between
             {{start}} and {{end}} :)</h4>
         {% for calendar in calendars%}

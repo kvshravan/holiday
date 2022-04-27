@@ -1,118 +1,156 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
-    <!-- Style -->
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
-    <title>Samay </title>
-    <style>
-      input::-webkit-outer-spin-button,
-      input::-webkit-inner-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-      }
+  <!-- Style -->
+  <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+  <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+  <link href="{{ url_for('static',filename='css/select2.min.css') }}" rel="stylesheet" />
+  <script src="{{ url_for('static',filename='js/select2.min.js')}}"></script>
 
-      input[type=number] {
-          -moz-appearance: textfield;
-      }
-      .container{
-          padding-left: 1%;
-      }
-      a:link {
-  color: red;
-}
+  <title>Samay </title>
+  <style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
-/* visited link */
-a:visited {
-  color: green;
-}
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
 
-/* mouse over link */
-a:hover {
-  color: hotpink;
-}
+    .container {
+      padding-left: 1%;
+    }
 
-/* selected link */
-a:active {
-  color: blue;
-}
-#back{
-  position: -webkit-sticky;
-  position: sticky;
-  top: 0;
-  background-color: whitesmoke;
-  text-decoration: underline;
-  text-underline-offset: 3.25px;
-}
-.submit{
-  padding: 8px;
-  border-radius: 4px;
-  border: 0;
-  background-color: #eb4d55;
-  color: #ffffff;
+    a:link {
+      color: red;
+    }
 
-}
-  </style>  
-  </head>
-  <body>
-    <div class="loader-wrapper">
-        <span class="loader"></span>
-      </div>
-    
-    <div class="container"> 
-            <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Back</a></h3>
-                <fieldset>
-                   <legend><p style="font-weight: 750;font-size: larger;">Holidays list</p></legend>
-                   {% for dkey,val in days.items() %}
-                   <h4>{{dkey}} &emsp; {{val}}&ensp;<a style='color: red;text-decoration: underline;' href="{{ url_for('.removeHoliday',key=dkey) }}"> Remove </a></h4>
-                   {% endfor %}
-                </fieldset>
-                <br>
-                <fieldset>
-                  <form method="post" action="">
-                    <legend><p style="font-weight: 750;font-size: larger;">Add a holiday</p></legend>
-                  <br>
-                  <input type="date" placeholder="Pick a date" name="pick" id="pick" required>
-                  <br>
-                  <br>
-                  <input type="text" placeholder="Holi" name="val" id="val" required>
-                  <br>
-                  <br>
-                  <input type="submit" class="submit" name="add" value="Add Holiday">
-                  </form>
-                </fieldset>
-                <br>
-                <fieldset>
-                  <form method="post" action="">
-                    <legend><p style="font-weight: 750;font-size: larger;">Add Multiple Weekdays</p></legend>
-                  <br>
-                  <select name="week" id="week">
-                    <option value="All-Mondays">All-Mondays</option>
-                    <option value="All-Tuesdays">All-Tuesdays</option>
-                    <option value="All-Wednesdays">All-Wednesdays</option>
-                    <option value="All-Thursdays">All-Thursdays</option>
-                    <option value="All-Fridays">All-Fridays</option>
-                    <option value="All-Saturdays">All-Saturdays</option>
-                    <option value="All-Sundays">All-Sundays</option>
-                  </select>
-                  <br>
-                  <br>
-                  <input type="submit" name="mul" value="Add Multiple" class="submit">
-                  </form>
-                </fieldset>
-            <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
-            
-      </div>
-      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
-      <script>
-        $(window).on("load",function(){
-          $(".loader-wrapper").fadeOut("slow");
-        });
-      </script> 
-  </body>
+    /* visited link */
+    a:visited {
+      color: green;
+    }
+
+    /* mouse over link */
+    a:hover {
+      color: hotpink;
+    }
+
+    /* selected link */
+    a:active {
+      color: blue;
+    }
+
+    #back {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background-color: whitesmoke;
+      text-decoration: underline;
+      text-underline-offset: 3.25px;
+    }
+
+    .submit {
+      padding: 8px;
+      border-radius: 4px;
+      border: 0;
+      background-color: #eb4d55;
+      color: #ffffff;
+
+    }
+  </style>
+</head>
+
+<body>
+  <div class="loader-wrapper">
+    <span class="loader"></span>
+  </div>
+
+  <div class="container">
+    <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;'>Back</a></h3>
+    <fieldset>
+      <legend>
+        <p style="font-weight: 750;font-size: larger;">Change Country</p>
+      </legend>
+    <form method="post" id="countryForm" action="">
+      <label for="country"><b>Country :</b></label>
+      <select name="country" id="country" class="js-example-basic-single" onchange="this.form.submit()">
+        <option value="{{defaultCountry[0]}}">{{defaultCountry[1]}}</option>
+        {% for country in countries %}
+        <option value="{{country[0]}}">{{country[1]}}</option>
+        {% endfor %}
+      </select>
+      <label for="subdiv"><b>Sub Division :</b></label>
+      <select name="subdiv" style="padding: 20px;" id="subdiv" class="js-example-basic-single" onchange="this.form.submit()">
+        <option value="{{defaultSub}}">{{defaultSub}}</option>
+        {% for subdiv in subdivs %}
+        <option value="{{subdiv}}">{{subdiv}}</option>
+        {% endfor %}
+      </select>
+    </form>
+  </fieldset>
+    <fieldset>
+      <legend>
+        <p style="font-weight: 750;font-size: larger;">Holidays list</p>
+      </legend>
+      {% for dkey,val in days.items() %}
+      <h4>{{dkey}} &emsp; {{val}}&ensp;<a style='color: red;text-decoration: underline;'
+          href="{{ url_for('.removeHoliday',key=dkey) }}"> Remove </a></h4>
+      {% endfor %}
+    </fieldset>
+    <br>
+    <fieldset>
+      <form method="post" action="">
+        <legend>
+          <p style="font-weight: 750;font-size: larger;">Add a holiday</p>
+        </legend>
+        <br>
+        <input type="date" placeholder="Pick a date" name="pick" id="pick" required>
+        <br>
+        <br>
+        <input type="text" placeholder="Holi" name="val" id="val" required>
+        <br>
+        <br>
+        <input type="submit" class="submit" name="add" value="Add Holiday">
+      </form>
+    </fieldset>
+    <br>
+    <fieldset>
+      <form method="post" action="">
+        <legend>
+          <p style="font-weight: 750;font-size: larger;">Add Multiple Weekdays</p>
+        </legend>
+        <br>
+        <select name="week" id="week">
+          <option value="All-Mondays">All-Mondays</option>
+          <option value="All-Tuesdays">All-Tuesdays</option>
+          <option value="All-Wednesdays">All-Wednesdays</option>
+          <option value="All-Thursdays">All-Thursdays</option>
+          <option value="All-Fridays">All-Fridays</option>
+          <option value="All-Saturdays">All-Saturdays</option>
+          <option value="All-Sundays">All-Sundays</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" name="mul" value="Add Multiple" class="submit">
+      </form>
+    </fieldset>
+    <hr style="width: 50%; text-align: left; margin-left: 0;margin-top: 15px; background-color: black;height: 1px;">
+
+  </div>
+  <script>
+    $(window).on("load", function () {
+      $(".loader-wrapper").fadeOut("slow");
+      $('.js-example-basic-single').select2();
+    });
+  </script>
+</body>
+
 </html>
