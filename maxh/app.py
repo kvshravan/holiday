@@ -1,5 +1,3 @@
-from plistlib import UID
-from turtle import update
 import requests
 from flask import Flask, request, render_template, make_response, redirect, url_for, abort
 import calendar
