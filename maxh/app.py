@@ -509,6 +509,7 @@ def render_link(uid):
         dataDict = {}
         for i in range(1, len(config)):
             dataDict[keys[i - 1]] = config[i]
+            
 
         if 'redirect' not in request.cookies:
             resp = make_response(redirect(url_for('.render_link', uid=uid, _external=True, _scheme="https")))
@@ -517,7 +518,7 @@ def render_link(uid):
             resp.set_cookie('subdiv', dataDict['subdiv'])
             if 'uid' not in request.cookies:
                 resp.set_cookie('uid', get_uuid())
-            resp.set_cookie('redirect', '1')
+            resp.set_cookie('redirect', '',expires=0)
             return resp
         else:
             cookie_uid = request.cookies.get('uid')
@@ -540,7 +541,6 @@ def render_link(uid):
                         last=maxholidays[len(maxholidays) - 1][0],
                         url = url
                     ))
-                resp.delete_cookie('redirect')
                 return resp
             elif dataDict['start'] is not None:
                 start, end = dataDict['start'], dataDict['end']
@@ -559,7 +559,6 @@ def render_link(uid):
                         last=maxholidays[len(maxholidays) - 1][0],
                         url = url
                     ))
-                resp.delete_cookie('redirect')
                 return resp
             else:
                 yy = int(dataDict['yy'])
@@ -573,7 +572,6 @@ def render_link(uid):
                         year=yy,
                         url = url
                     ))
-                resp.delete_cookie('redirect')
                 return resp
     return abort(404)
 
