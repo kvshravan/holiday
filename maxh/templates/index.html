@@ -114,14 +114,14 @@
                 <div class="row">
                   <div class="col-md-12 form-group">
                     <label for="yy"><b>Year :</b></label>
-                    <input type="number" inputmode="numeric" class="form-control" name="yy" id="yy"
+                    <input type="number" min="1" max="9999" inputmode="numeric" class="form-control" name="yy" id="yy"
                       placeholder="Enter Year" value="{{year}}" required>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12 form-group">
                     <label for="k"><b>Maximum Affordable leaves for the vacation :</b></label>
-                    <input type="number" inputmode="numeric" class="form-control" name="k" id="k"
+                    <input type="number" min="1" max="366" inputmode="numeric" class="form-control" name="k" id="k"
                       placeholder="Enter Leaves" required>
                   </div>
                 </div>
@@ -129,7 +129,7 @@
                 <div class="row" id="chooseMonth">
                   <div class="col-md-12 form-group">
                     <label for="mm"><b>Choose a month :</b></label>
-                    <select name="mm" id="mm" class="browser-default custom-select custom-select-lg mb-3 rounded">
+                    <select name="mm"  id="mm" class="browser-default custom-select custom-select-lg mb-3 rounded">
                       <option value="1">January</option>
                       <option value="2">February</option>
                       <option value="3">March</option>
