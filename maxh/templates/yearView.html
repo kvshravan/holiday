@@ -37,6 +37,18 @@
       tr:nth-child(2){
           background-color: white;
       }
+      #mob {
+            background-color: #eb4d55;
+            color: white;
+            border: 0;
+            border-radius: 3px;
+            padding: 10px 25px;
+        }
+
+        #mob:focus {
+            background-color: #ea878c;
+        }
+
       #back {
       position: -webkit-sticky;
       position: sticky;
@@ -56,6 +68,8 @@
       <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;'>Back</a></h3>
 
             <h4> Here are the best {{choices}} choices for you with atmost <span style='color: #eb4d55;'>{{k}} </span> leaves in the year of {{year}} :)</h4>
+            <button id="mob"> Share this entire schedule!</button>
+            <br><br>
             {% for holidays,calendars in yearList %}
             {% for calendar in calendars%}
             {{calendar | safe}}
@@ -80,6 +94,25 @@
       <script>
         $(window).on("load",function(){
           $(".loader-wrapper").fadeOut("slow");
+        });
+        $('#mob').on('click', () => {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Samay Vacation Time!',
+                    text: 'Hey there! Take a look at this vacation schedule.\n You should take a leave from work for {{k}} days\n',
+                    url: '{{url}}'
+                })
+                    .then(() => console.log('Successful share'))
+                    .catch((error) => console.log('Error sharing', error));
+            } else {
+                text = 'Hey there! Take a look at this vacation schedule.\n You should take a leave from work for {{k}} days\nLink: {{url}}'
+                navigator.clipboard.writeText(text).then(function () {
+                    console.log('Async: Copying to clipboard was successful!');
+                    alert('Copied to clipboard!');
+                }, function (err) {
+                    console.error('Async: Could not copy text: ', err);
+                });
+            }
         });
       </script> 
   </body>

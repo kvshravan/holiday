@@ -44,7 +44,6 @@
     }
 
     #mob {
-      display: none;
       background-color: #eb4d55;
       color: white;
       border: 0;
@@ -56,11 +55,6 @@
       background-color: #ea878c;
     }
 
-    @media only screen and (max-width: 768px) {
-      #mob {
-        display: block;
-      }
-    }
     #back {
       position: -webkit-sticky;
       position: sticky;
@@ -121,7 +115,13 @@
           .then(() => console.log('Successful share'))
           .catch((error) => console.log('Error sharing', error));
       } else {
-        console.log('Share not supported on this browser, do it the old way.');
+        text = 'Hey there! Take a look at this vacation schedule.\nFrom {{holidays[0][0]}} to {{last}}.\n You should take a leave from work for {{k}} days\nLink: {{url}}'
+        navigator.clipboard.writeText(text).then(function () {
+          console.log('Async: Copying to clipboard was successful!');
+          alert('Copied to clipboard!');
+        }, function (err) {
+          console.error('Async: Could not copy text: ', err);
+        });
       }
     });
   </script>
