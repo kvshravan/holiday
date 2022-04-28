@@ -115,7 +115,8 @@
       if (navigator.share) {
         navigator.share({
           title: 'Samay Vacation Time!',
-          text: 'Hey there! Take a look at this vacation schedule.\nFrom {{holidays[0][0]}} to {{last}}.\n You should take a leave from work for {{k}} days'
+          text: 'Hey there! Take a look at this vacation schedule.\nFrom {{holidays[0][0]}} to {{last}}.\n You should take a leave from work for {{k}} days',
+          url: '{{url}}'
         })
           .then(() => console.log('Successful share'))
           .catch((error) => console.log('Error sharing', error));
