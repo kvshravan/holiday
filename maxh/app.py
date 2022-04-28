@@ -1,11 +1,15 @@
+from plistlib import UID
+from turtle import update
 import requests
-from flask import Flask, request, render_template, make_response, redirect, url_for
+from flask import Flask, request, render_template, make_response, redirect, url_for, abort
 import calendar
 from datetime import date, datetime, timedelta
 import heapq
 import json
 import holidays as hm
 import pycountry as pc
+import uuid
+from database import insert_into_table, get_holidays_by_uid, update_holidays
 # Create an instance of the Flask class that is the WSGI application.
 # The first argument is the name of the application module or package,
 # typically __name__ when using a single module.
@@ -249,17 +253,40 @@ def bestTimeInYear(yy, k):
     return topChoices(yearList, holidays)
 
 
+def generate_link(uid, config):
+    try:
+        insert_config = (uid, ) + config
+        insert_into_table(insert_config)
+        return f'{DOMAIN_NAME}/l/{uid}'
+    except Exception as e:
+        try:
+            update_config = config + (uid, )
+            update_holidays(update_config)
+            return f'{DOMAIN_NAME}/l/{uid}'
+        except Exception as se:
+            print(se)
+        print(e)
+    return ''
+
+
 @app.route('/', methods=['GET', 'POST'])
 def home():
     # Render the page
     if request.method == "POST":
+        cookie_holidays = request.cookies.get('holidays')
+        cookie_country = request.cookies.get('country')
+        cookie_uid = request.cookies.get('uid')
+        cookie_subdiv = request.cookies.get('subdiv')
         if 'rrr' in request.form:
+            yy = mm = None
             start = request.form.get('start')
             end = request.form.get('end')
             k = int(request.form.get('k'))
             dstart = datetime.strptime(start, "%Y-%m-%d").date()
             dend = datetime.strptime(end, "%Y-%m-%d").date()
             maxholidays, calendars = bestTimeInADateRange(dstart, dend, k)
+            config = (yy, mm, start, end, k, cookie_country, cookie_subdiv,
+                      cookie_holidays)
             return render_template(
                 'dateview.html',
                 noHolidays=len(maxholidays),
@@ -269,12 +296,16 @@ def home():
                 holidays=maxholidays,
                 calendars=calendars,
                 last=maxholidays[len(maxholidays) - 1][0],
+                url= generate_link(cookie_uid, config)
             )
         else:
             yy = int(request.form.get('yy'))
             mm = int(request.form.get('mm'))
             k = int(request.form.get('k'))
+            start = end = None
             if 'mmm' in request.form:
+                config = (yy, mm, start, end, k, cookie_country, cookie_subdiv,
+                          cookie_holidays)
                 maxholidays, calendars = bestTimeInAMonth(yy, mm, k)
                 #print(bestTimeInYear(yy, k))
                 return render_template(
@@ -285,8 +316,12 @@ def home():
                     holidays=maxholidays,
                     calendars=calendars,
                     last=maxholidays[len(maxholidays) - 1][0],
+                    url= generate_link(cookie_uid, config)
                 )
             else:
+                mm = None
+                config = (yy, mm, start, end, k, cookie_country, cookie_subdiv,
+                          cookie_holidays)
                 yearList = bestTimeInYear(yy, k)
                 return render_template(
                     'yearView.html',
@@ -294,15 +329,18 @@ def home():
                     k=k,
                     choices=CHOICES,
                     year=yy,
+                    url= generate_link(cookie_uid, config)
                 )
     current_year = date.today().year
     country = get_country(get_ip())
     if country is None:
         country = DEFAULT_COUNTRY_CODE
     resp = make_response(render_template('index.html', year=current_year))
+    if 'uid' not in request.cookies:
+        resp.set_cookie('uid', get_uuid())
     if 'holidays' not in request.cookies:
         init_holidays = {}
-        init_holidays = get_holidays(country, current_year,'-')
+        init_holidays = get_holidays(country, current_year, '-')
         resp.set_cookie('holidays', json.dumps(init_holidays))
     if 'country' not in request.cookies:
         resp.set_cookie('country', country)
@@ -311,17 +349,17 @@ def home():
     return resp
 
 
-def get_holidays(country, current_year,subdiv):
+def get_holidays(country, current_year, subdiv):
     country_holidays = {}
     country_holidays['All-Saturdays'] = " "
     country_holidays['All-Sundays'] = " "
     try:
-        if subdiv !='-':
+        if subdiv != '-':
             national_holidays = hm.country_holidays(
-            country,subdiv=subdiv, years=[current_year, current_year + 1])        
+                country, subdiv=subdiv, years=[current_year, current_year + 1])
         else:
             national_holidays = hm.country_holidays(
-            country, years=[current_year, current_year + 1])
+                country, years=[current_year, current_year + 1])
         for day, name in national_holidays.items():
             country_holidays[str(day)] = name
         if country == DEFAULT_COUNTRY_CODE:
@@ -368,23 +406,26 @@ def get_subdiv_names(country):
     subdivs = hm.country_holidays(country).subdivisions
     return subdivs
 
+
 def encode_spaces(s):
     lis = []
     for c in s:
-        if c!=' ':
+        if c != ' ':
             lis.append(c)
         else:
             lis.append('+')
     return "".join(lis)
 
+
 def decode_spaces(s):
     lis = []
     for c in s:
-        if c=='+':
+        if c == '+':
             lis.append(' ')
         else:
             lis.append(c)
     return "".join(lis)
+
 
 @app.route('/holiday', methods=['GET', 'POST'])
 def holiday():
@@ -398,14 +439,14 @@ def holiday():
     sub_div_names = get_subdiv_names(cookie_country_code)
     if request.method == "POST":
         if 'country' in request.form:
-            country,subdiv = request.form.get('country'), request.form.get('subdiv')
-            if country!= cookie_country_code:
+            country, subdiv = request.form.get('country'), request.form.get(
+                'subdiv')
+            if country != cookie_country_code:
                 subdiv = '-'
-            new_holidays = get_holidays(country,date.today().year,subdiv)
+            new_holidays = get_holidays(country, date.today().year, subdiv)
             subdiv = encode_spaces(subdiv)
             resp = make_response(
-                    redirect(   
-                        url_for('.holiday', _external=True, _scheme="https")))
+                redirect(url_for('.holiday', _external=True, _scheme="https")))
             resp.set_cookie('holidays', json.dumps(new_holidays))
             resp.set_cookie('country', country)
             resp.set_cookie('subdiv', subdiv)
@@ -455,6 +496,90 @@ def removeHoliday(key):
     return redirect(url_for('holiday'))
 
 
+def get_uuid():
+    return uuid.uuid4().hex
+
+
+@app.route('/l/<uid>', methods=['GET', 'POST'])
+def render_link(uid):
+    config = get_holidays_by_uid(uid)
+    print('c', config)
+    if config is not None:
+        keys = [
+            'yy', 'mm', 'start', 'end', 'k', 'country', 'subdiv', 'holidays'
+        ]
+        dataDict = {}
+        for i in range(1, len(config)):
+            dataDict[keys[i - 1]] = config[i]
+
+        if 'redirect' not in request.cookies:
+            resp = make_response(redirect(url_for('.render_link', uid=uid, _external=True, _scheme="https")))
+            resp.set_cookie('holidays', dataDict['holidays'])
+            resp.set_cookie('country', dataDict['country'])
+            resp.set_cookie('subdiv', dataDict['subdiv'])
+            if 'uid' not in request.cookies:
+                resp.set_cookie('uid', get_uuid())
+            resp.set_cookie('redirect', '1')
+            return resp
+        else:
+            cookie_uid = request.cookies.get('uid')
+            config = (dataDict['yy'], dataDict['mm'], dataDict['start'],
+                      dataDict['end'], dataDict['k'], dataDict['country'],
+                      dataDict['subdiv'], dataDict['holidays'])
+            url = generate_link(cookie_uid, config)
+            k = int(dataDict['k'])
+            if dataDict['mm'] is not None:
+                yy, mm = int(dataDict['yy']), int(dataDict['mm'])
+                maxholidays, calendars = bestTimeInAMonth(yy, mm, k)
+                resp = make_response(
+                    render_template(
+                        'view.html',
+                        noHolidays=len(maxholidays),
+                        k=k,
+                        month=calendar.month_name[mm],
+                        holidays=maxholidays,
+                        calendars=calendars,
+                        last=maxholidays[len(maxholidays) - 1][0],
+                        url = url
+                    ))
+                resp.delete_cookie('redirect')
+                return resp
+            elif dataDict['start'] is not None:
+                start, end = dataDict['start'], dataDict['end']
+                dstart = datetime.strptime(start, "%Y-%m-%d").date()
+                dend = datetime.strptime(end, "%Y-%m-%d").date()
+                maxholidays, calendars = bestTimeInADateRange(dstart, dend, k)
+                resp = make_response(
+                    render_template(
+                        'dateview.html',
+                        noHolidays=len(maxholidays),
+                        k=k,
+                        start=start,
+                        end=end,
+                        holidays=maxholidays,
+                        calendars=calendars,
+                        last=maxholidays[len(maxholidays) - 1][0],
+                        url = url
+                    ))
+                resp.delete_cookie('redirect')
+                return resp
+            else:
+                yy = int(dataDict['yy'])
+                yearList = bestTimeInYear(yy, k)
+                resp = make_response(
+                    render_template(
+                        'yearView.html',
+                        yearList=yearList,
+                        k=k,
+                        choices=CHOICES,
+                        year=yy,
+                        url = url
+                    ))
+                resp.delete_cookie('redirect')
+                return resp
+    return abort(404)
+
+
 @app.route('/about', methods=['GET'])
 def about():
     return render_template('about.html')
@@ -485,6 +610,7 @@ allHolidays = {
 }
 DEFAULT_COUNTRY_CODE = 'IN'
 CHOICES = 10
+DOMAIN_NAME = 'https://vacationtime.herokuapp.com'
 
 if __name__ == '__main__':
     # Run the app server on localhost:5000
