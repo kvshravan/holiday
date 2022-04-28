@@ -606,7 +606,7 @@ allHolidays = {
     "All-Sundays": " "
 }
 DEFAULT_COUNTRY_CODE = 'IN'
-CHOICES = 10
+CHOICES = 5
 DOMAIN_NAME = 'https://vacationtime.herokuapp.com'
 
 if __name__ == '__main__':
