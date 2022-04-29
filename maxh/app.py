@@ -333,6 +333,8 @@ def home():
     country = get_country(get_ip())
     if country is None:
         country = DEFAULT_COUNTRY_CODE
+    if 'country' in request.cookies:
+        country = request.cookies.get('country')
     country_name = None
     try:
         country_name = pc.countries.get(alpha_2=country).name
