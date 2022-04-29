@@ -361,11 +361,17 @@ def get_holidays(country, current_year, subdiv):
     country_holidays['All-Sundays'] = " "
     try:
         if subdiv != '-':
-            national_holidays = hm.country_holidays(
-                country, subdiv=subdiv, years=[current_year, current_year + 1])
+            if country == 'SE':
+                national_holidays = hm.Sweden(include_sundays=False,subdiv=subdiv, years=[current_year, current_year + 1])
+            else:
+                national_holidays = hm.country_holidays(
+                    country, subdiv=subdiv, years=[current_year, current_year + 1])
         else:
-            national_holidays = hm.country_holidays(
-                country, years=[current_year, current_year + 1])
+            if country == 'SE':
+                national_holidays = hm.Sweden(include_sundays=False, years=[current_year, current_year + 1])
+            else:
+                national_holidays = hm.country_holidays(
+                    country, years=[current_year, current_year + 1])
         for day, name in national_holidays.items():
             country_holidays[str(day)] = name
         if country == DEFAULT_COUNTRY_CODE:
