@@ -587,6 +587,9 @@ def render_link(uid):
 def about():
     return render_template('about.html')
 
+@app.route('/help', methods=['GET'])
+def help():
+    return render_template('help.html')
 
 allHolidays = {
     "2022-01-13": "Uruka /Lohri",
