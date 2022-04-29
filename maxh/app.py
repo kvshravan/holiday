@@ -333,7 +333,13 @@ def home():
     country = get_country(get_ip())
     if country is None:
         country = DEFAULT_COUNTRY_CODE
-    resp = make_response(render_template('index.html', year=current_year))
+    country_name = None
+    try:
+        country_name = pc.countries.get(alpha_2=country).name
+    except Exception as e:
+        print(e)
+        country_name = 'India'
+    resp = make_response(render_template('index.html', year=current_year,country=country_name))
     if 'uid' not in request.cookies:
         resp.set_cookie('uid', get_uuid())
     if 'holidays' not in request.cookies:

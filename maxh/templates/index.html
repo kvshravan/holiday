@@ -4,6 +4,10 @@
 <head>
   <!-- Required meta tags -->
   <meta charset="utf-8">
+  <meta name="keywords" content="vacation, Samay, Samay vacation time, work leaves">
+  <meta name="description" content="Maximum Holidays for a vacation">
+  <meta name="author" content="Venkata Shravan">
+
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
 
@@ -39,6 +43,9 @@
       text-underline-offset: 3.25px;
       background-color: rgba(219, 219, 219, 0.504);
 }
+#nav{
+  padding: 5px;
+}
 #nav h5{
   padding: 13px;
 }
@@ -70,6 +77,8 @@
             <div class="col-lg-7 mb-5 mb-lg-0">
 
               <h2 class="mb-5">Relax, <br>Take a break.</h2>
+              <p id="mob">You are currently in {{country}}. To change your country or to customise holidays please <span style="font-weight: 450; color: #eb4d55;" onclick="scrollDown()">Scroll down <i style="text-align: center;" class="fa fa-angle-double-down" style="font-size:24px;color:red"></i>
+                </span> the bottom of the page.<p>
               <div id="nav" class="row justify-content-center">
               <h5 id="monthbtn" class="current"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Month</a></h4>
               <h5 id="yearbtn"><a href="{{ url_for('.home') }} " style='color: #eb4d55;' >Year</a></h4>
@@ -93,9 +102,9 @@
               </div>
               <div class="row">
                 <div class="col-md-12 form-group">
-                  <label for="k"><b>Maximum Affordable leaves for the vacation :</b></label>
+                  <label for="k"><b>Max. affordable days of leave for the vacation :</b></label>
                   <input type="number" inputmode="numeric" class="form-control" name="k" id="k"
-                    placeholder="Enter Leaves" required>
+                    placeholder="Enter number of days" required>
                 </div>
               </div>
               <div class="row">
@@ -120,7 +129,7 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12 form-group">
-                    <label for="k"><b>Maximum Affordable leaves for the vacation :</b></label>
+                    <label for="k"><b>Max. affordable days of leave for the vacation :</b></label>
                     <input type="number" min="1" max="366" inputmode="numeric" class="form-control" name="k" id="k"
                       placeholder="Enter Leaves" required>
                   </div>
@@ -161,8 +170,7 @@
             </div>
             <div class="col-lg-4 ml-auto">
               <h3 class="mb-4">Samay.</h3>
-              <p>Whether its a short break or a vacation, we will help you pick leaves so you can get maximum holidays
-                :)</p>
+              <p>Whether it's a short break or a vacation, Samay helps you maximise your vacation / break time with minimum days of leave.</p>
               <p><a style="font-size: larger;" href="{{ url_for('.holiday') }}">View / Edit holidays.</a></p>
               <p><a style="font-size: larger;" href="{{ url_for('.about') }}">About.</a></p>
             </div>
