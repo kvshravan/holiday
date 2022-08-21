@@ -1,2 +1,65 @@
-<link rel="icon" href="{{ url_for('static',filename='images/icons/samay(1).ico') }}">
-<h2>Work in progress! Help page will be here soon! :)</h2>
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="keywords" content="vacation, Samay, Samay vacation time, work leaves">
+  <meta name="description" content="Maximum Holidays for a vacation">
+  <meta name="author" content="Venkata Shravan">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <link rel="icon" href="{{ url_for('static',filename='images/icons/samay(1).ico') }}">
+
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,700,900&display=swap" rel="stylesheet">
+
+    <!-- Style -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/style.css') }}">
+
+    <title>Samay </title>
+    <style>
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+      }
+
+      input[type=number] {
+          -moz-appearance: textfield;
+      }
+      .container{
+          padding-left: 1%;
+      }
+      #back {
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0;
+      background-color: whitesmoke;
+      text-decoration: underline;
+      text-underline-offset: 3.25px;
+    }
+  </style>  
+  </head>
+  <body>
+    <div class="loader-wrapper">
+        <span class="loader"></span>
+      </div>
+    
+    <div class="container"> 
+      <h3 id="back"><a href="{{ url_for('.home') }} " style='color: #eb4d55;'>Back</a></h3>
+                <fieldset>
+                   <legend><p style="font-weight: 750;font-size: larger;">Samay - Help</p></legend>
+                    <p>Samay helps you get maximum consecutive holidays with affordable leaves.</p>
+                    <p> To start using the tool enter the year and the number of days of leave you are planning to use for the vacation/break (Max. affordable field)</p> 
+                    <p>To customise holidays/country go to View/Edit Holidays page. Here you can remove holidays, add any custom holiday and even add mutiple weekday holidays for an entire year.</p>
+                    <P>By default All saturdays and sundays are considered holidays but for instance your company might be closed on every Monday and every Tuesday, you can remove All-sundays and All-saturdays from the list of holidays and add custom multiple holidays on "All-Mondays" and on "All-Tuesdays".</P> 
+                    <p>Feel free to suggest any features or report any bugs. You can find my handles in the <a href="{{ url_for('.about') }} " style='color: #eb4d55;'>about</a> page.</p> 
+                </fieldset>
+            
+      </div>
+      <script src="{{ url_for('static',filename='js/jquery-3.3.1.min.js')}}"></script>
+      <script>
+        $(window).on("load",function(){
+          $(".loader-wrapper").fadeOut("slow");
+        });
+      </script> 
+  </body>
+</html>

@@ -1,3 +1,4 @@
+# Author: Venkata Shravan
 import requests
 from flask import Flask, request, render_template, make_response, redirect, url_for, abort
 import calendar
@@ -8,14 +9,9 @@ import holidays as hm
 import pycountry as pc
 import uuid
 from database import insert_into_table, get_holidays_by_uid, update_holidays
-# Create an instance of the Flask class that is the WSGI application.
-# The first argument is the name of the application module or package,
-# typically __name__ when using a single module.
+
 app = Flask(__name__)
 
-# Flask route decorators map / and /hello to the hello function.
-# To add other resources, create functions that generate the page contents
-# and add decorators to define the appropriate resource locators for them.
 
 
 class HighlightedCalendar(calendar.HTMLCalendar):
@@ -346,7 +342,10 @@ def home():
         resp.set_cookie('uid', get_uuid())
     if 'holidays' not in request.cookies:
         init_holidays = {}
-        init_holidays = get_holidays(country, current_year, '-')
+        if 'ms' in request.cookies:
+            init_holidays = msftIndia
+        else:
+            init_holidays = get_holidays(country, current_year, '-')
         resp.set_cookie('holidays', json.dumps(init_holidays))
     if 'country' not in request.cookies:
         resp.set_cookie('country', country)
@@ -599,6 +598,13 @@ def about():
 def help():
     return render_template('help.html')
 
+@app.route('/ms',methods=['GET'])
+def msftRedirect():
+    # MS India holidays
+    resp = make_response(redirect(url_for('.home')))
+    resp.set_cookie('ms','1')
+    return resp
+
 allHolidays = {
     "2022-01-13": "Uruka /Lohri",
     "2022-01-14": "Shankranti",
@@ -622,9 +628,29 @@ allHolidays = {
     "All-Saturdays": " ",
     "All-Sundays": " "
 }
+msftIndia = {
+    "2022-10-02": "Mahatma Gandhi's Birthday",
+    "2022-10-05": "Dussehra",
+    "2022-10-24": "Deepavali",
+    "2022-11-01": "Karnataka Formation Day",
+    "2022-11-08": "Guru Nanak's Birthday",
+    "All-Saturdays": " ",
+    "All-Sundays": " "
+}
 DEFAULT_COUNTRY_CODE = 'IN'
 CHOICES = 5
 DOMAIN_NAME = 'https://vacationtime.herokuapp.com'
+
+@app.before_request
+def before_request():
+    if app.env == "development":
+        return
+    if request.is_secure:
+        return
+
+    url = request.url.replace("http://", "https://", 1)
+    code = 301
+    return redirect(url, code=code)
 
 if __name__ == '__main__':
     # Run the app server on localhost:5000
