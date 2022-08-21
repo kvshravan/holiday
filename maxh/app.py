@@ -653,5 +653,5 @@ def before_request():
     return redirect(url, code=code)
 
 if __name__ == '__main__':
-    # Run the app server on localhost:5000
+    # Run the app server
     app.run()
