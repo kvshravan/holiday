@@ -601,6 +601,10 @@ def help():
 @app.route('/ms',methods=['GET'])
 def msftRedirect():
     # MS India holidays
+    try:
+        request.cookies.clear()
+    except Exception as e:
+        print(e)
     resp = make_response(redirect(url_for('.home')))
     resp.set_cookie('ms','1')
     return resp
