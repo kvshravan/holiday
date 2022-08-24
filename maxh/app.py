@@ -630,6 +630,7 @@ allHolidays = {
     "All-Sundays": " "
 }
 msftIndia = {
+    "2022-08-31": "Ganesh Chaturthi",
     "2022-10-02": "Mahatma Gandhi's Birthday",
     "2022-10-05": "Dussehra",
     "2022-10-24": "Deepavali",
