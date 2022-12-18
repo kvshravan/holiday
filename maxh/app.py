@@ -391,8 +391,10 @@ def get_ip():
 
 def get_country(ip):
     try:
+        print('IP address'+ip)
         response = requests.get("http://ip-api.com/json/{}".format(ip))
         js = response.json()
+        print(js)
         country = js['countryCode']
         return country
     except Exception as e:
