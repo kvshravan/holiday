@@ -384,7 +384,7 @@ def get_holidays(country, current_year, subdiv):
 
 def get_ip():
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        print('Remote_addr: 'request.environ['REMOTE_ADDR'])
+        print('Remote_addr: ',request.environ['REMOTE_ADDR'])
         print('remote addr 2.0: ',request.remote_addr)
         return request.environ['REMOTE_ADDR']
     else:
