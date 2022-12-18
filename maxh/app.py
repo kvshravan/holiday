@@ -388,7 +388,8 @@ def get_ip():
         print('remote addr 2.0: ',request.remote_addr)
         return request.environ['REMOTE_ADDR']
     else:
-        return request.environ['HTTP_X_FORWARDED_FOR']
+        print(request.headers)
+        return request.headers.getlist("X-Forwarded-For")[0]
 
 
 def get_country(ip):
