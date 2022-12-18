@@ -374,7 +374,7 @@ def get_holidays(country, current_year, subdiv):
         for day, name in national_holidays.items():
             country_holidays[str(day)] = name
         if country == DEFAULT_COUNTRY_CODE:
-            country_holidays |= allHolidays
+            country_holidays = {**country_holidays, **allHolidays}
         country_holidays = dict(sorted(country_holidays.items()))
     except Exception as e:
         print(e)
