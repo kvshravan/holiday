@@ -384,20 +384,15 @@ def get_holidays(country, current_year, subdiv):
 
 def get_ip():
     if request.environ.get('HTTP_X_FORWARDED_FOR') is None:
-        print('Remote_addr: ',request.environ['REMOTE_ADDR'])
-        print('remote addr 2.0: ',request.remote_addr)
         return request.environ['REMOTE_ADDR']
     else:
-        print(request.headers)
-        return request.headers.getlist("X-Forwarded-For")[0]
+        return request.environ.get("HTTP_X_FORWARDED_FOR").split(',')[0]
 
 
 def get_country(ip):
     try:
-        print('IP address'+ip)
         response = requests.get("http://ip-api.com/json/{}".format(ip))
         js = response.json()
-        print(js)
         country = js['countryCode']
         return country
     except Exception as e:
