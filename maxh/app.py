@@ -222,6 +222,9 @@ def bestTimeInYear(yy, k):
     today = date.today()
     today += timedelta(days=1)
     mm, dd = today.month, today.day
+    # If year is not current year, start from january
+    if today.year != yy:
+        mm = dd = 1
     i = date(yy, mm, dd)
     j = date(yy, mm, dd)
     holidays = {}
