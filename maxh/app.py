@@ -644,7 +644,7 @@ msftIndia = {
 }
 DEFAULT_COUNTRY_CODE = 'IN'
 CHOICES = 5
-DOMAIN_NAME = 'https://vacationtime.herokuapp.com'
+DOMAIN_NAME = 'https://samay.onrender.com'
 
 @app.before_request
 def before_request():
