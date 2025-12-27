@@ -407,6 +407,9 @@ def get_country_names(country_code):
     names = []
     default_country_name = 'INDIA'
     for countryCode in hm.list_supported_countries():
+        countryObject = pc.countries.get(alpha_2=countryCode)
+        if countryObject is None:
+            continue
         if countryCode == country_code:
             default_country_name = (countryCode,
                                     pc.countries.get(alpha_2=countryCode).name)
@@ -648,7 +651,7 @@ DOMAIN_NAME = 'https://samay.onrender.com'
 
 @app.before_request
 def before_request():
-    if app.env == "development":
+    if app.debug:
         return
     if request.is_secure:
         return
