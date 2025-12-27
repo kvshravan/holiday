@@ -1,6 +1,6 @@
 # Samay - the best planner
 
-Link - https://samay.onrender.com/
+Link - https://findsamay.com/
 
 Planning on a trip to Goa with friends in the month of March and can’t decide when to put work leave? Well Samay is here for you. 
 Samay helps you get maximum number of consecutive holidays with the minimal days of leave. Samay also helps you pick the best time for a vacation in an entire year , You can also view/edit the holiday list and plan vacation according to your schedule.
