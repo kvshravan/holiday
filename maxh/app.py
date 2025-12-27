@@ -647,7 +647,7 @@ msftIndia = {
 }
 DEFAULT_COUNTRY_CODE = 'IN'
 CHOICES = 5
-DOMAIN_NAME = 'https://samay.onrender.com'
+DOMAIN_NAME = 'https://findsamay.com'
 
 if __name__ == '__main__':
     # Run the app server
