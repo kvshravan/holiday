@@ -649,17 +649,6 @@ DEFAULT_COUNTRY_CODE = 'IN'
 CHOICES = 5
 DOMAIN_NAME = 'https://samay.onrender.com'
 
-@app.before_request
-def before_request():
-    if app.debug:
-        return
-    if request.is_secure:
-        return
-
-    url = request.url.replace("http://", "https://", 1)
-    code = 301
-    return redirect(url, code=code)
-
 if __name__ == '__main__':
     # Run the app server
     app.run()
