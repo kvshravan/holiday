@@ -207,7 +207,7 @@ def topChoices(heap, holidays):
     choices = CHOICES  # top m choices
     contextList = []
     heapq.heapify(heap)
-    while choices:
+    while choices and heap:
         h, maxi, maxj = heapq.heappop(heap)
         maxj -= timedelta(days=1)
         caliHolidays = get_calenders_holidays(maxi, maxj, holidays)
