@@ -121,7 +121,6 @@ def get_calenders_holidays(maxi, maxj, holidays):
 
     highlights_dict.clear()
     leaves_dict.clear()
-
     return maxholidays, calendars
 
 
@@ -211,7 +210,9 @@ def topChoices(heap, holidays):
     while choices:
         h, maxi, maxj = heapq.heappop(heap)
         maxj -= timedelta(days=1)
-        contextList.append(get_calenders_holidays(maxi, maxj, holidays))
+        caliHolidays = get_calenders_holidays(maxi, maxj, holidays)
+        if len(caliHolidays[0]) !=0 and len(caliHolidays[1])!=0:
+            contextList.append(caliHolidays)
         choices -= 1
     return contextList
 
